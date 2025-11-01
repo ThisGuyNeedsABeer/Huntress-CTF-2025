@@ -1,7 +1,7 @@
 # Huntress-CTF-2025
 A collection of challenges, scripts, and write-ups for the 2025 Huntress CTF. Please note this script may contain live malware samples from the CTF, while all of the content should be defanged, please exercise caution when running untrusted executables.
 
-**Note:** _These are my finished "working" folders, they may contain scratch notes and other odds and ends. As always, be cautious as some of these files contained "defanged" malware samples._
+**Note:** _These are **my ** finished "working" folders, they may contain scratch notes and other odds and ends. As always, be cautious as some of these files contained "defanged" malware samples._
 
 # Final Results
 I completed on team "Han Shot First" along with @Xe and @beardhammer and we scored **7th place** out of **6869 registered participants** (solo and teams).
