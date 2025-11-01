@@ -4,7 +4,7 @@ A collection of challenges, scripts, and write-ups for the 2025 Huntress CTF. Pl
 **Note:** _These are my finished "working" folders, they may contain scratch notes and other odds and ends. As always, be cautious as some of these files contained "defanged" malware samples._
 
 # Final Results
-I completed on team "Han Shot First" and we scored **7th place** out of **6869 registered participants** (solo and teams).
+I completed on team "Han Shot First" along with @Xe and @beardhammer and we scored **7th place** out of **6869 registered participants** (solo and teams).
 
 <img width="1920" height="1021" alt="final-scoreboard-2025" src="https://github.com/user-attachments/assets/c663dd6d-3c7b-47de-bbdc-9b9cefdad2be" />
 
