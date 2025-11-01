@@ -1,0 +1,34 @@
+Challenge: Rusty Tickler
+Category: Reverse Engineering
+Author: @Nordgaren
+
+Description:
+
+Ooooh Rust! AND tickles? Rusty tickles...?
+
+Ooooh Rust! AND tickles? Rusty tickles...?
+
+rust_tickler 35.3 kB
+
+Solve:
+
+1. Download the challenge file and analyze quickly with "file" to discover a PE file.
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/reverse_engineering/rusty_tickler]
+└─$ file rust_tickler 
+rust_tickler: PE32+ executable for MS Windows 6.00 (console), x86-64, 5 sections
+
+2. Extract any strings with "FLOSS."
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/reverse_engineering/rusty_tickler]
+└─$ floss rust_tickler
+
+	... output omitted ...
+	7=06*gagg30d03gf2`f5g5dba3c0hhcd2c`4b,
+	... output omitted ...
+
+3. The string above looks to be flag length, and XOR encrypted. Brute forcing with CyberChef with discover a hex key of 0x51 and get our flag [flag.png].
+
+	a. flag{6066ba5ab67c17d6d530b2a9925c21e3}
+
+Flag: flag{6066ba5ab67c17d6d530b2a9925c21e3}

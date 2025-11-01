@@ -1,0 +1,15 @@
+Challenge: Rust Tickler 2
+Category: Reverse Engineering
+Author: @Nordgaren
+
+Description:
+
+You all looked like you were having so much fun reverse engineering Rust code... why not do it again!?
+
+rust-tickler-2.7z 59 kB
+
+Solve:
+
+1. I did not personally solve this one, my teammates @Xe and @beardhammer did. My brain melted.
+
+Flag: flag{f59a5f604d236425490133c3fac89a88}

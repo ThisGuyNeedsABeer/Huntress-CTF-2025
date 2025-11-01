@@ -1,0 +1,12 @@
+Challenge: NimCrackMe1
+Category: Reverse Engineering
+Author: John Hammond
+
+Description:
+
+I just really like Nim, okay, I think it's neat.
+(Could very well be used by threat actors too, so it's worth getting a feel for some Nimlang reverse engineering!)
+
+Solve:
+
+Refer to "NimCrackMe1.md"

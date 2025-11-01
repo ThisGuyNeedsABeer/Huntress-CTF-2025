@@ -1,0 +1,30 @@
+Challenge: Trashcan
+Category: Forensics
+Author: John Hammond
+
+Description:
+Have you ever done forensics on the Recycle Bin? It's... a bit of a mess. Looks like the threat actor pulled some tricks to hide data here though.
+
+The metadata might not be what it should be. Can you find a flag?
+
+Solve:
+
+1. Download and extract the challenge files
+
+2. They are all prefixed $I which could correspond to $R files I learned after reading this articile on Recycle Bin Forensics
+	
+	2a. http://medium.com/@thismanera/windows-recycle-bin-forensics-a2998c9a4d3e
+
+3. I used "$I File Parser" from FlashBackData to reconstruct the data
+
+	3a. https://www.flashbackdata.com/free-forensics-tool-i-file-parser/
+
+4. The filsizes looked like a familiar decimal pattern, throwing a couple values into CyberChef confirmed that
+
+5. I had a a Python script generated to extract the values, and construct a flag from my results.csv
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/forensics/trashcan]
+└─$ python solve.py                                    
+FLAG: flag{1d2b2b05671ed1ee5812678850d5e329}
+
+Flag: flag{1d2b2b05671ed1ee5812678850d5e329}

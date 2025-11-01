@@ -1,0 +1,16 @@
+Challenge: Rust Tickler 3
+Category: Reverse Engineering
+Author: @Nordgaren
+
+Description:
+
+It's back. Good luck.
+
+rust-tickler-3.7z 6.49 MB
+
+Solve:
+
+1. Thankful to have a strong team this year who can reverse engineer because this Rust stuff just put me over the edge. This was also solved by my teammates
+   @Xe and @beardhammer. I do not have any write up of my own other than our Discord DMs back and forth collaborating and bouncing ideas around.
+
+Flag: flag{fb8de641f383151222845d9b991a17c2}

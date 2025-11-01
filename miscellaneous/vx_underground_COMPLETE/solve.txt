@@ -1,0 +1,122 @@
+Challenge: VX Underground
+Category: Miscellaneous
+Author: John Hammond
+
+Description:
+
+vx-underground, widely known across social media for hosting the largest collection and library of cat pictures, has been plagued since the dawn of time by people asking: "what's the password?"
+
+Today, we ask the same question. We believe there are secrets shared amongst the cat pictures... but perhaps these also lead to just more cats.
+
+Uncover the flag from the file provided.
+
+vx-underground.zip 62.5 MB
+
+Solve:
+
+1. Download and extract the challenge files
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/miscellaneous/vx_underground]
+└─$ 7z x vx-underground.zip                                     
+
+7-Zip 25.01 (x64) : Copyright (c) 1999-2025 Igor Pavlov : 2025-08-03
+ 64-bit locale=en_US.UTF-8 Threads:16 OPEN_MAX:1024, ASM
+
+Scanning the drive for archives:
+1 file, 62536049 bytes (60 MiB)
+
+Extracting archive: vx-underground.zip
+--
+Path = vx-underground.zip
+Type = zip
+Physical Size = 62536049
+
+Everything is Ok
+
+Files: 459
+Size:       65139430
+Compressed: 62536049
+
+2. We get 3 new files
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/miscellaneous/vx_underground]
+└─$ ls -lah  
+total 60M
+drwxrwxr-x 3 ctf ctf 4.0K Oct 18 08:17  .
+drwxrwxr-x 5 ctf ctf 4.0K Oct 18 08:15  ..
+drwxrwxr-x 2 ctf ctf  56K Oct 18 08:17 'Cat Archive'
+-rw-rw-r-- 1 ctf ctf  454 Sep 21 17:31  flag.zip
+-rw------- 1 ctf ctf  42K Sep 21 17:31  prime_mod.jpg
+
+3. Flag.zip is currently encrypted, 'Cat Archive' is a bunch of pictures of cats as expected, and "prime_mod.jpg" is a single cat picture
+
+4. Analyzing "prime_mod.jpg" we find a "USER COMMENT" in the EXIF data
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/miscellaneous/vx_underground]
+└─$ exiftool -v5 prime_mod.jpg
+
+... snip ...
+UserComment = UNICODEPrime Modulus: 010000000000000000000000000000000000000000000000000000000000000129
+... snip ...
+
+5. Analyzing all of the files in 'Cat Archive' they also contain "USER COMMENTS" I extracted them all with [extract.sh] in the 'Cat Archive' directory
+
+	a. Generated [output.txt]
+
+6. I cleaned up the output to remove the data up to and including "UNICODE" on each line [output-raw.txt]
+	
+	a. Sorted: [output-sorted.txt]
+
+7. After some Googling, we came across "Shamir's Shared Secrets" from: https://www.lost-cluster.org/shattered_secrets/
+
+	a. This method was applied to decrypt the ZIP password [decrypt.py]
+
+		┌──(ctf㉿kali)-[~/CTF/huntress2025/miscellaneous/vx_underground]
+		└─$ python decrypt.py output-sorted.txt 
+
+		[+] Recovered secret (int): 74830710406337953293893850299316176162833267079322310969040841421022189427
+		[+] Recovered secret (hex): 00002a5a49502070617373776f72643a20464170656b4a21794a363959616a5773
+		[+] Secret as UTF-8 (if printable): *ZIP password: FApekJ!yJ69YajWs
+
+8. Now that we have a readable ASCII zip password, we can extract "flag.zip"
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/miscellaneous/vx_underground]
+└─$ 7z x -p'FApekJ!yJ69YajWs' flag.zip 
+
+7-Zip 25.01 (x64) : Copyright (c) 1999-2025 Igor Pavlov : 2025-08-03
+ 64-bit locale=en_US.UTF-8 Threads:16 OPEN_MAX:1024, ASM
+
+Scanning the drive for archives:
+1 file, 454 bytes (1 KiB)
+
+Extracting archive: flag.zip
+--
+Path = flag.zip
+Type = zip
+Physical Size = 454
+
+Everything is Ok
+
+Size:       34216
+Compressed: 454
+
+9. This gives us, not a flag but [cute-kitty-noises.txt] which contains multiple strings of "MeowMeow"
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/miscellaneous/vx_underground]
+└─$ strings cute-kitty-noises.txt     
+MeowMeow;MeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeow;Meow;;MeowMeow;MeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeowMeow
+
+... snip ...
+
+	a. This reminded me of "Cow Code" why can't there be "Meow Code" and I was right: https://github.com/wixette/meowlang
+	b. Interpreting the code at: https://wixette.github.io/meowlang/ we get a new string of numbers (NOTE: Check the debug box)
+
+		[2, 109, 1, 0, 2, 97, 1, 0, 2, 108, 1, 0, 2, 119, 1, 0, 2, 97, 1, 0, 2, 114, 1, 0, 2, 101, 1, 0, 2, 32, 1, 0, 2, 105, 1, 0, 2, 115, 1, 0, 2, 32, 1, 0, 2, 105, 1, 0, 2, 108, 1, 0, 2, 108, 1, 0, 2, 101, 1, 0, 2, 103, 1, 0, 2, 97, 1, 0, 2, 108, 1, 0, 2, 32, 1, 0, 2, 97, 1, 0, 2, 110, 1, 0, 2, 100, 1, 0, 2, 32, 1, 0, 2, 102, 1, 0, 2, 111, 1, 0, 2, 114, 1, 0, 2, 32, 1, 0, 2, 110, 1, 0, 2, 101, 1, 0, 2, 114, 1, 0, 2, 100, 1, 0, 2, 115, 1, 0, 2, 10, 1, 0, 2, 99, 1, 0, 2, 97, 1, 0, 2, 116, 1, 0, 2, 115, 1, 0, 2, 32, 1, 0, 2, 97, 1, 0, 2, 114, 1, 0, 2, 101, 1, 0, 2, 32, 1, 0, 2, 99, 1, 0, 2, 111, 1, 0, 2, 111, 1, 0, 2, 108, 1, 0, 2, 32, 1, 0, 2, 97, 1, 0, 2, 110, 1, 0, 2, 100, 1, 0, 2, 32, 1, 0, 2, 98, 1, 0, 2, 97, 1, 0, 2, 100, 1, 0, 2, 97, 1, 0, 2, 115, 1, 0, 2, 115, 1, 0, 2, 10, 1, 0, 2, 102, 1, 0, 2, 108, 1, 0, 2, 97, 1, 0, 2, 103, 1, 0, 2, 123, 1, 0, 2, 51, 1, 0, 2, 53, 1, 0, 2, 100, 1, 0, 2, 99, 1, 0, 2, 98, 1, 0, 2, 97, 1, 0, 2, 49, 1, 0, 2, 51, 1, 0, 2, 48, 1, 0, 2, 51, 1, 0, 2, 51, 1, 0, 2, 52, 1, 0, 2, 53, 1, 0, 2, 57, 1, 0, 2, 99, 1, 0, 2, 97, 1, 0, 2, 55, 1, 0, 2, 57, 1, 0, 2, 57, 1, 0, 2, 97, 1, 0, 2, 101, 1, 0, 2, 50, 1, 0, 2, 100, 1, 0, 2, 57, 1, 0, 2, 57, 1, 0, 2, 48, 1, 0, 2, 100, 1, 0, 2, 51, 1, 0, 2, 51, 1, 0, 2, 100, 1, 0, 2, 100, 1, 0, 2, 51, 1, 0, 2, 125, 1, 0]
+
+10. Decoding the decimal array with CyberChef we can get the following message:
+
+malware is illegal and for nerds
+cats are cool and badass
+flag{35dcba13033459ca799ae2d990d33dd3}
+
+Flag: flag{35dcba13033459ca799ae2d990d33dd3}
