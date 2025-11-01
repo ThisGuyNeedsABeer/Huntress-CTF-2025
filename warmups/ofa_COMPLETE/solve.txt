@@ -1,0 +1,17 @@
+Challenge: OFA
+Category: Warmups
+Author: Matt Kiely (HuskyHacks)
+
+Description:
+
+Two factors? In this economy??!!
+
+Solve:
+
+1. Launcht he challenge URL: https://c5b733fb.proxy.coursestack.com/
+2. Enter "admin" for the username and password to presented with the OTP page (any username will work) [login.png]
+3. Enter any 6 digit code for the OTP [otp-1.png]
+4. Receive an error message and enter the proper OTP [otp-2.png]
+5. The flag is returned [flag.png]
+
+Flag: flag{013cb9b123afec26b572af5087364081}

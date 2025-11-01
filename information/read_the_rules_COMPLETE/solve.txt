@@ -1,0 +1,18 @@
+Name: Read The Rules
+Category: Information
+Author: John Hammond
+
+Description:
+
+Please follow the rules for the Huntress CTF!
+
+Read the rules at https://ctf.huntress.com/rules
+
+If you look closely, you can find a flag!
+
+Solve:
+
+1. Launch the URL: https://ctf.huntress.com/rules
+2. Open Dev Tools > Debugger > Search In Files
+	2a. Enable RegEx Search: flag{.*?}
+3. Flag: flag{bf61aced6e7f9335385a70f33b20d188}

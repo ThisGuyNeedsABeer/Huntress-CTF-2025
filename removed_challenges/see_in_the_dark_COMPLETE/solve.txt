@@ -1,0 +1,13 @@
+Challenge: See In the Dark
+Category: Onions
+Author: John Hammond
+
+Description:
+
+Solve:
+
+1. Download TOR Browser
+2. Navigate to the Onion URL
+3. Retreive the flag [flag.png]
+
+Flag: flag{a9d40962c465c571fe4edd288bf0f0b5}

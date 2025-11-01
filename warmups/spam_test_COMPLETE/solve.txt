@@ -1,0 +1,17 @@
+Name: Spam Test
+Category: Warmups
+Author: John Hammond
+
+Description:
+
+Time to do some careful Googling... what's the MD5 hash of the Generic Test for Unsolicited Bulk Email (GTUBE) string?
+
+Submit the hash wrapped within the flag{ prefix and } suffix to match the standard flag format.
+
+Solve:
+
+1. Enter the phrase into DuckDuckGo
+2. https://duckduckgo.com/?q=what%27s+the+MD5+hash+of+the+Generic+Test+for+Unsolicited+Bulk+Email+(GTUBE)+string&atb=v479-1&ia=web
+3. The MD5 hash of the GTUBE string is 6a684e1cdca03e6a436d182dd4069183.
+
+Flag: flag{6a684e1cdca03e6a436d182dd4069183}

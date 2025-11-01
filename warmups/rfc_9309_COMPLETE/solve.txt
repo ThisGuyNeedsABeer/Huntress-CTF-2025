@@ -1,0 +1,18 @@
+Name: RFC 9309
+Category: Warmups
+Author: John Hammond
+
+Description:
+
+Sorry. You know every CTF has to have it. 🤷
+
+Solve:
+
+1. Launch the challenge URL
+
+2. Curl Robots.txt and grep for the flag
+┌──(ctf㉿kali)-[~]
+└─$ curl -sSL http://10.1.224.156/robots.txt | grep -oE flag{.*?} --color=none
+flag{aec1142c199aa5d8ad0f3ae3fa82e13c}
+
+3. Flag: flag{aec1142c199aa5d8ad0f3ae3fa82e13c}

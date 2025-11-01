@@ -1,0 +1,19 @@
+Name: Technical Support
+Category: Information
+Author: John Hammond
+
+Description:
+
+Want to join the party of GIFs, memes and emoji shenanigans? Or just want to ask a question for technical support regarding any challenges in the CTF? Be sure to join the Huntress CTF Discord server.
+
+This CTF uses support tickets within Discord to help handle requests.
+
+If you need assistance, please create a ticket with the #ctf-open-ticket channel. You do not need to direct message any CTF organizers or facilitators, they will just tell you to open a ticket. You might find a flag in the ticket channel, though!
+
+Join the Discord! (https://discord.gg/zMGs6khZpa)
+
+Solve:
+
+1. Launch the URL: https://discord.gg/zMGs6khZpa
+2. Navigate to #ctf-open-ticket
+3. Flag: flag{68cc5f95b59112d7d6b041cd16f9f19d}
