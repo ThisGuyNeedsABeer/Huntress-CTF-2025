@@ -1,0 +1,6 @@
+- Final Flag: flag{didsomeonesay..?}
+- Bonus Flag #1: flag{928nzlasdu2}
+- Bonus Flag #2: flag{02818nccnasd}
+- Bonus Flag #3: flag{2naxajsmcwijdm}
+- Bonus Flag #4: flag{3mcnzxjaslwinca}
+- Bonus Flag #5: flag{mczxals2amxc}

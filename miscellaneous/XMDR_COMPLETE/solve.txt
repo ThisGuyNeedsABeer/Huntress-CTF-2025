@@ -1,0 +1,110 @@
+Challenge: XMDR
+Category: Miscellaneous
+Author: John Hammond
+
+Description:
+
+We had a lot of fun helping the Internet understand what MDRs are, but we thought of the next the best thing:
+why not have you use one! 😄
+
+A host that you protect had some strange alerts fire off... can you analyze and triage to find other malicious activity?
+
+Solve:
+
+1. Launch the challenge instance and connect in the browser. [xmdr-1.png]
+
+	a. We can run some "canned tasks" to see processes, users, firewall info, etc.
+	b. We see some "HackTool" files that have been quarantined
+	c. We see the default "Administrator" account has been used to download these files
+
+2. Reviewing the "Administrator's" downloads folder we see a few files still present [xmdr-2.png]
+	
+	a. ChromeSetup.exe: Chrome was downloaded, and presumably installed
+	b. GTRS-1.tar.gz: Google Translate Reverse Shell (https://github.com/mthbernardes/GTRS)
+		i. BabyShark-main.zip: A modern GTRS implementation, also removed (https://github.com/UnkL4b/BabyShark)
+
+3. We can now review the Google Chrome History to see if we can identify any C2 commands [xmdr-3.png]
+
+	a. Download the file, and extract for review
+
+	┌──(ctf㉿kali)-[~/CTF/huntress2025/miscellaneous/XMDR]
+	└─$ 7z x -pinfected 6ee2746d8ec5d8f57fed50914c373cac93f0521239394515fa6113b762f19fe0.zip 
+
+	7-Zip 25.01 (x64) : Copyright (c) 1999-2025 Igor Pavlov : 2025-08-03
+	 64-bit locale=en_US.UTF-8 Threads:16 OPEN_MAX:1024, ASM
+
+	Scanning the drive for archives:
+	1 file, 34282 bytes (34 KiB)
+
+	Extracting archive: 6ee2746d8ec5d8f57fed50914c373cac93f0521239394515fa6113b762f19fe0.zip
+	--
+	Path = 6ee2746d8ec5d8f57fed50914c373cac93f0521239394515fa6113b762f19fe0.zip
+	Type = zip
+	Physical Size = 34282
+
+	Everything is Ok
+
+	Size:       327680
+	Compressed: 34282
+
+4. The history file is a SQLite file, and opening in "DB Browser For SQLite" we can see a table titled "URLs" [db-1.png]
+
+	a. Browsing this table we can see some familiar "Huntress CTF" artifacts as well as "C2" references, so we are likely
+	   on the right path. [db-2.png]
+
+   	b. Looking further down, we can see references to GTRS/BabyShark/LOLC2, which tells us that the Google Translate URL's
+   	   are likely C2 related [db-3.png]
+
+5. Using CyberChef we can decode the URL [cc-1.png]
+
+	a. https://gchq.github.io/CyberChef/#recipe=URL_Decode(true)&input=aHR0cHM6Ly90cmFuc2xhdGUuZ29vZ2xlLmNvbS8/aGw9ZW4mdGFiPVRUJnNsPWF1dG8mdGw9ZW4mdGV4dD1TVEFSVENPTU1BTkQlMEFiZWdpbiUyMDY2NCUyMC0lMEElMkIlM0NXRVMlM0QlMjY1TSUzQTZZRiUzQlBIJTYwJTBBJTYwJTBBZW5kJTBBRU5EQ09NTUFORCUwQSZvcD10cmFuc2xhdGU&oenc=65001
+	
+		https://translate.google.com/?hl=en&tab=TT&sl=auto&tl=en&text=STARTCOMMAND
+		begin 664 -
+		+<WES=&5M:6YF;PH`
+		`
+		end
+		ENDCOMMAND
+		&op=translate
+
+	a. This sort of encoding looks to be "UU Encoding" given the prefix "begin 666 -" and the suffix "end"
+	b. Decoding with dcode.fr we can unravel the command [dcfr-1.png]
+
+		systeminfo
+
+6. Repeat this process we find a myriad of commands designed to make noise
+
+	sc qc lanmanserver
+	net user
+	net localgroup administrators
+	net localgroup "Remote Desktop Users"
+	net share
+	net session
+	netstat -ano
+	netstat -ab
+	ipconfig /all
+	ipconfig /displaydns
+	arp -a
+	route print
+	nslookup -type=any google.com
+	ping -n 4 8.8.8.8
+	ping -n 4 8.8.8.8
+	getmac /v /fo list
+
+7. Eventually table entry 76 contains our flag value [flag-1.png]
+
+	a. https://translate.google.com/?hl=en&tab=TT&sl=es&tl=en&text=STARTCOMMAND%0Abegin%20664%20-%0AL96-H%3BR!F%3B%26%25G%3ES8Y%2CC%60P8S%24S9%26-B%2CSED93%24Y830P-64Y9%23%25F.3DS.%23(Q%3F0H%60%0A%60%0Aend%0AENDCOMMAND%0A&op=translate [flag-2.png]
+
+		https://translate.google.com/?hl=en&tab=TT&sl=es&tl=en&text=STARTCOMMAND
+		begin 664 -
+		L96-H;R!F;&%G>S8Y,C`P8S$S9&-B,SED93$Y830P-64Y9#%F.3DS.#(Q?0H`
+		`
+		end
+		ENDCOMMAND
+		&op=translate
+
+	b. L96-H;R!F;&%G>S8Y,C`P8S$S9&-B,SED93$Y830P-64Y9#%F.3DS.#(Q?0H` [flag-3.png]
+
+		echo flag{69200c13dcb39de19a405e9d1f993821}
+
+Flag: flag{69200c13dcb39de19a405e9d1f993821}

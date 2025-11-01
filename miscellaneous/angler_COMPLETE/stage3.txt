@@ -1,0 +1,20 @@
+Raw:
+
+ÓvÄ7du¥#eÖ6vwt&F'eu¥§$5FgÆeÖ6¦e#6vUt$4¥Wdt7wuÆ¥¥$&$4FÆÆÆ¥ö$5FgÆWudÖ&%36Æ%tÆtFvtFvw5¥#Ö$5¥ö%WÆtÆ#FvÖ&Ö¥vÔvv##Fvö%g%¶Su¥EvÄÆtg%Æ¥æ$5V7Su¥'dtF§Æu&vU3&S$6eÖ6¦e#6vUt$&$¥WÆt&ÆeÖ6vw5VÆGtÆ%#ÆÖ6w$5v3&Ö$4F¤t7CuÖ$6g$4§et&Ö$6g¥töäÖ$4FgStg%t¤vÄ§euVÆ$6uVvUÖ6g¥u¥$4¥ÆäF#6%t77Ö&t$&tFF¶ÆtvÔv7#&gtST7UÖV¤6vTt736¤FvU3&S$5¥GdÖ&vTteævw5V7¥ttG¤3&3$5v3&W$6$5¥e&v¶E´C5¥We#§$4&¤#&7Ft¶Suv36¥$&$4ÄÆ%#&¦$4&¥u¥d#vvtFFÆSu7$5VG$4F§d#v¶T7Cu¥Æ¤3§$¥WÆ#Fg#¥vTtÆ¤3&öäSt7TtF%tÖtÆ%uG$6$5ÆäS¶4´T5§6¦ÔSTE¥GÆteÆte7uæSuöäö$ÆôG#Wæ¥gä3&äuGS#&W§¶Ö6¶6Æ#6t6
+
+Rotated Right (4):
+
+=gLsFWZ2VmcgwGbpdHIrVWZzBSdvlHI0VmcjV2cgUGa0BCZuFGIswWYlZXZyByb0BCdllHIlZXYoBSdvlHIu9Wa0FmbpR3clRGIlhGdg8GdgwSZ29mYhBSZoRHIulGa0l2dgQmb19mZgMXagg2Yph2dgQXYoRHIvRHIk5WZTpgLl1GIvRHIlZXanBSes5WZrFGdzlWbgU3b5Byc0VmcjV2cgUGa0BibpByZulGblVmcgwSeltGIlRXY2lmcwBSYgI3bmBCd1JGIs4WamBicvBCazVGbmBicvZGIoNXamBCdv5GIvRGIJpgLzVWelBic19WegUmcvZWZiBCZlNXa1d2cpRGIssmbpxGIhBibphGdpdHIklGagMXags2bvhGI51EIsUmepJHcgEGIsQ3c1JHdgU3b5BSZtFmbgEGI0VnYgwSesZGIy9GItJ3b3BSYgQ3buBycpBSZyVHbgkXTK4SZuV2YzBCbhJ2bsdGIk5WYgQ3chZHIhBibpBCLlR2bjBCb1ZWZyF2YggGdpdHIl5WasBSetBCdzF2YgkEIs4WZlJ3YzByZul2dvx2ZgEGIlJ3boNHI51GIsEGdhRGIm9GIlRWYtBycpBSYlNHI51kCKESIzcjM5ETZtlGVlhGVsxWQn5WaoNXaoBlOt92YuQnZvN3byNWat52buYzYkhmc0Akclh2cphGc
+
+Reverse By Character:
+
+cGhpc2hlckA0cmhkYzYub25taWNyb3NvZnQuY29tOlBoaXNoaW5nQWxsVGhlVGltZTE5MjczISEKCk15IHNlYSBpcyBtYWRlIG9mIGRhdGEsIG15IHNob3JlIGEgZ2xvd2luZyBzY3JlZW4sIEkgY2FzdCBteSBsaW5lIHdpdGggY2FyZWZ1bCBjb2RlLCBpbiBhIHZhc3QgYW5kIGdsb2JhbCBzY2VuZS4KTXkgbHVyZSBpcyBub3QgYSB3b3JtIG9yIGZseSwgYnV0IGEgbmFtZSB5b3UgdHJ1c3QsIGEgcHJpemUsIE15IGhvb2sgaXMgaGlkIHdpdGhpbiBhIGxpbmssIGRpc2d1aXNlZCBiZWZvcmUgeW91ciBleWVzLgpJIGRvIG5vdCBmaXNoIGZvciBmbGVzaCBvciBmaW4sIGJ1dCBmb3IgYSBwcml2YXRlIGtleSwgcmVlbGluZyBpbiB0aGUgc2VjcmV0cyB5b3UgbWlzdGFrZW5seSBnaXZlIHRvIG1lLgpTZW5kIHRvIHRoYXQgd2hpY2ggaXMgZm91bmQgd2l0aGluIHRoZSBhYm92ZSwgdG8gdGhlIGRlc3RpbmF0aW9uIHlvdSBoYXZlIHlldCB0byByZXZlYWwsIGFuZCB0aGUgc2VjcmV0IHlvdSBzZWVrIHdpbGwgcmV2ZWFsLg=
+
+From Base64:
+
+phisher@4rhdc6.onmicrosoft.com:PhishingAllTheTime19273!!
+
+My sea is made of data, my shore a glowing screen, I cast my line with careful code, in a vast and global scene.
+My lure is not a worm or fly, but a name you trust, a prize, My hook is hid within a link, disguised before your eyes.
+I do not fish for flesh or fin, but for a private key, reeling in the secrets you mistakenly give to me.
+Send to that which is found within the above, to the destination you have yet to reveal, and the secret you seek will reveal.

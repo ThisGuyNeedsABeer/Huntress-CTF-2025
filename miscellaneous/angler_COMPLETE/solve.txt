@@ -1,0 +1,89 @@
+Challenge: Angler
+Category: Miscellaneous
+Author: Tim Sword
+
+Description:
+
+These scribbles are impossible to read!
+
+42 6c 6f 77 66 69 73 68
+
+Some crazy fisherman came by, dropped this note, and was muttering something in his drunken stupor, about his fishing pole and taking out... murlocs in Entra? and CyberChef!?
+
+scribbles.dat (37.6 kB)
+
+I don't get it. You're the expert here! Not me!
+
+WARNING
+
+This challenge is designed for you to have a look around using enumeration tooling and emphasises thinking "outside the box", versus challenging your ability to 'pwn' the tenant. Please do not sabotage the challenge!
+
+MFA is intended for this challenge. If you cannot sign in, try a different way.
+
+This challenge uses flags that are not in the standard format of flag{[MD5HASH]}. You will find flags with the flag{ prefix and } suffix, but a short alphanumeric string with some special characters wrapped inside the curly braces.
+
+What is the FINAL flag? This flag is unlike the others and ends with a `?` character.
+
+NOTE
+This challenge also includes some "bonus flags" along the way that are still worth some points.
+
+Bonus Flag #1: Submit the bonus flag that ends with the character `2` below.
+Bonus Flag #2: Submit the bonus flag that ends with the character `d` below.
+Bonus Flag #3: Submit the bonus flag that ends with the character `a` below. 
+Bonus Flag #4: Submit the bonus flag that ends with the character `m` below.
+Bonus Flag #5: Submit the bonus flag that ends with the character `c` below.
+
+Solve: 
+
+1. First decode the hex above with Binary Refinery
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/miscellaneous/angler]
+└─$ emit "42 6c 6f 77 66 69 73 68" | unhex                                                               
+Blowfish
+
+2. Download and analyze Scribbles.dat
+
+	2a. It appears to be hex, but using "unhex" from BinRef just produces garbage
+	2b. The clue was Blowfish"
+	2c. Decoding at Cyberchef with the key "Blowfish" (UTF-8) and a null-byte IV in hex (00 00 00 00 00 00 00 00) produces new output that appears to be binary (remove the 
+	    leftover header bits: 'r]^GVXCX') [stage1.txt]
+
+3. Decode the binary from Stage 1 and get a new set of number groupings that appear to be hex again (remoe the leftover '3' from the conversion) [stage2.txt]
+
+	3a. The decoded hex appears to be gibberish, but we can start analyzing. CyberChef "magic" suggests, rotating to the right "4", reversing by character, and decoding base64. [stage3.txt] I had to play around with "magic" a bit to get this to work.
+
+4. We end up with some credentials [credentials.txt] and a riddle [riddle.txt]
+
+	4a. Credentials: phisher@4rhdc6.onmicrosoft.com:PhishingAllTheTime19273!!
+
+5. Logging into 365, we can start hunting flags. I had AI write me a script to start dumping O365 data at large parsing for flags.
+
+.\365.ps1 returned:
+
+	Location                      Property         Value                 ObjectName
+	--------                      --------         -----                 ----------
+	User                          CompanyName      flag{02818nccnasd}    Adele Vance
+	AzureADGroup                  DisplayName      flag{mczxals2amxc}    flag{mczxals2amxc}
+	ServicePrincipal              Notes            flag{2naxajsmcwijdm}  AAD Request Verification Service - PROD
+	ServicePrincipal              Notes            flag{3mcnzxjaslwinca} Microsoft Graph Command Line Tools
+	OrganizationBranding          UsernameHintText flag{928nzlasdu2}     Unknown
+	OrganizationBrandingLocalized UsernameHintText flag{928nzlasdu2}     Unknown
+
+	- Bonus Flag #1: flag{928nzlasdu2}
+	- Bonus Flag #2: flag{02818nccnasd}
+	- Bonus Flag #3: flag{2naxajsmcwijdm}
+	- Bonus Flag #4: flag{3mcnzxjaslwinca}
+	- Bonus Flag #5: flag{mczxals2amxc}
+
+6. Send an e-mail to "nattyp@51tjxh.onmicrosoft.com" with the keyword "Blowfish" and you'll receive
+
+	Congratulations! Here's your final flag: flag{didsomeonesay..?}
+
+	I hope you enjoyed the challenge. Go check out the others!
+
+	There are optional bonus flags hidden in the Entra environment that contain this source email address. Grab them and claim bonus points!
+
+Final Flag: flag{didsomeonesay..?}
+
+Purview Queries with flags/nattyp@51tjxh.onmicrosoft.com
+https://purview.microsoft.com/audit/asyncsearchresults?viewid=%7B%22startDate%22%3A%222025-10-05T04%3A00%3A00.000Z%22%2C%22endDate%22%3A%222025-10-12T04%3A00%3A00.000Z%22%2C%22startTime%22%3A%2200%3A00%3A00%22%2C%22endTime%22%3A%2200%3A00%3A00%22%2C%22operationList%22%3A%5B%5D%2C%22selectedUsers%22%3A%5B%5D%2C%22targetObject%22%3A%5B%5D%2C%22ipAddresses%22%3A%5B%5D%2C%22searchName%22%3A%22%22%2C%22recordTypes%22%3A%5B%5D%2C%22freeText%22%3A%22%22%2C%22selectedAdminUnits%22%3A%5B%5D%2C%22workloads%22%3A%5B%5D%2C%22freeFromOperation%22%3A%5B%5D%2C%22userKeys%22%3A%5B%5D%2C%22userTypes%22%3A%5B%5D%2C%22recordIds%22%3A%5B%5D%2C%22recordId%22%3A%22e24ea74d-b77a-4002-92a2-0e980b8c7b65%22%7D&auditLogProvider=%7B%22identitity%22%3A%22e24ea74d-b77a-4002-92a2-0e980b8c7b65%22%2C%22request%22%3A%22%7B%5C%22SearchName%5C%22%3A%5C%22%5C%22%2C%5C%22Id%5C%22%3A%5C%22e24ea74d-b77a-4002-92a2-0e980b8c7b65%5C%22%2C%5C%22RequestType%5C%22%3A%5C%22AuditSearch%5C%22%2C%5C%22StartDateUtc%5C%22%3A%5C%222025-05-01T00%3A00%3A00Z%5C%22%2C%5C%22EndDateUtc%5C%22%3A%5C%222025-10-12T00%3A00%3A00Z%5C%22%2C%5C%22RecordType%5C%22%3Anull%2C%5C%22RecordTypes%5C%22%3A%5B%5D%2C%5C%22Workload%5C%22%3Anull%2C%5C%22Workloads%5C%22%3A%5B%5D%2C%5C%22WorkloadsToInclude%5C%22%3Anull%2C%5C%22WorkloadsToExclude%5C%22%3Anull%2C%5C%22ScopedWorkloadSearchEnabled%5C%22%3Afalse%2C%5C%22Operations%5C%22%3A%5B%5D%2C%5C%22Users%5C%22%3A%5B%5D%2C%5C%22ObjectIds%5C%22%3A%5B%5D%2C%5C%22RecordIds%5C%22%3Anull%2C%5C%22UserKeys%5C%22%3Anull%2C%5C%22UserTypes%5C%22%3Anull%2C%5C%22IPAddresses%5C%22%3A%5B%5D%2C%5C%22SiteIds%5C%22%3Anull%2C%5C%22AssociatedAdminUnits%5C%22%3A%5B%5D%2C%5C%22FreeText%5C%22%3A%5C%22flag%5C%22%2C%5C%22ResultSize%5C%22%3A0%2C%5C%22TimeoutInSeconds%5C%22%3A86400%2C%5C%22ScopedAdminWithoutAdminUnits%5C%22%3Afalse%7D%22%2C%22jobstatus%22%3A%22Succeeded%22%2C%22progress%22%3A%22100%25%22%2C%22totalItems%22%3A5%7D&tid=05985beb-42bc-4c24-bf49-c1730a825406
