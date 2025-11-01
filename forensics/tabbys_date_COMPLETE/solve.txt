@@ -1,0 +1,31 @@
+Challenge: Tabby's Date
+Category: Forensics
+Author: John Hammond
+
+Description:
+
+Ohhhh, Tab, Tab, Tab.... what has she done.
+
+My friend Tabby just got a new laptop and she's been using it to take notes. She says she puts her whole life on there!
+
+She was so excited to finally have a date with a boy she liked, but she completely forgot the details of where and when. She told me she remembers writing it in a note... but she doesn't think she saved it!!
+
+She shared with us an export of her laptop files.
+
+tabbys_date.zip
+
+39.8 kB
+
+NOTE
+The password to the ZIP archive is "tabbys_date".
+
+Can you help us find the details of Tab's date?
+
+1. I used FlareVM for this challenge. Given the clues in the description, this is a recovery of a Notepad.exe tab.
+2. In 7zip, you can see all the files/folders are 0 in size, keep following the largest size to the following folder
+
+	2a. C:\Users\Tabby\AppData\Local\Packages\Microsoft.WindowsNotepad_8wekyb3d8bbwe\LocalState\TabState\
+
+3. Start with the largest file and open with Notepad++, and the flag is presented in the text. [tabbys-date-1.png]
+
+Flag: flag{165d19b610c02b283fc1a6b4a54c4a58}

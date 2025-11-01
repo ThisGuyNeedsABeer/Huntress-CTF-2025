@@ -1,0 +1,35 @@
+Challenge: Snooze
+Category: Warmups
+Author: John Hammond
+
+Description:
+
+Don't bug me, I'm sleeping! Zzzz... zzz... zzzz....
+
+Uncover the flag from the file presented.
+
+Solve:
+
+1. Download "Snooze" from the challenge website
+2. Identify as a compress'd file
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/warmups/snooze]
+└─$ file snooze   
+snooze: compress'd data 16 bits
+                                
+3. Rename to "snooze.z" and uncompress.
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/warmups/snooze]
+└─$ mv snooze snooze.z | uncompress snooze.z   
+                                                                                                                                                                                                                                            
+┌──(ctf㉿kali)-[~/CTF/huntress2025/warmups/snooze]
+└─$ file snooze 
+snooze: ASCII text
+
+4. Read snooze
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/warmups/snooze]
+└─$ cat snooze                                     
+flag{c1c07c90efa59876a97c44c2b175903e}
+
+Flag: flag{c1c07c90efa59876a97c44c2b175903e}

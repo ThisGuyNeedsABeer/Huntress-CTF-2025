@@ -1,0 +1,82 @@
+Challenge: Flag Checker
+Category: Web
+Author: Soups71
+
+Description:
+
+We've decided to make this challenge really straight forward. All you have to do is find out the flag!
+
+Juuuust make sure not to trip any of the security controls implemented to stop brute force attacks...
+
+NOTE:
+Working this challenge may be difficult with the browser-based connection alone. We again recommend you use the direct IP address over the VPN connection.
+
+Solve:
+
+1. Launching the challenge we are presented with a flag check prompt. [flag-checker-1.png]
+
+2. Entering a token in the expected format of "flag{...}" yields "Not Quite!" as a response.
+
+3. Reviewing the source code of the page there was nothing overtly interesting jumping out.
+
+	3a. Submission URL: https://10.1.40.49/submit?flag=flag{anything}
+	3b. After 11 manual submissions (usually) you are blocked and are met with the message "Stop Hacking!! Your IP Has Been Blocked."
+
+4. During the fuzzing stages of the prompts, it was observed that the response times were different based on the user input.
+
+	4a. flag{0 would yield 515ms
+	4b. flag{1 would yield 510ms
+	4c. flag{2 would yield 513ms
+	4d. ....
+	4e. flag{7 would yield 615ms <--- increased response time
+	4f. flag{8 would yield 510ms
+	4g. flag{9 would yield 511ms
+	4h. flag{a would yield 512ms
+	4i. ...
+
+5. This behavior was able to replicated again by submitted the entry with the increased response time, and curiously, the response times
+   all increased by ~100ms. 
+
+	5a. flag{70 would yield 615ms
+	5b. flag{71 would yield 610ms
+	5c. flag{72 would yield 613ms
+	5d. ....
+	5e. flag{77 would yield 715ms <--- increased response time
+	5f. flag{78 would yield 610ms
+	5g. flag{79 would yield 611ms
+	5h. flag{7a would yield 612ms
+	5i. ...
+
+6. Since the increase response time was "flag{77" and to confirm that was "not a fluke" and that we may be dealing with some sort of timing
+   attack, I ran that input back through the flag checker.
+
+ 	6a. flag{770 would yield 715ms
+	6b. flag{771 would yield 710ms
+	6c. flag{772 would yield 713ms
+	6d. ....
+	6e. flag{77a would yield 715ms 
+	6f. flag{77b would yield 810ms <--- increased response time
+	6g. flag{77c9 would yield 711ms
+	6h. flag{77da would yield 712ms
+	6i. ...
+
+7. It looks like we have confirmed the timing attack and are starting to build out a flag. There were 16 submission attempts needed to build
+   the flag, and we were getting IP blocked after 11, without fail. Tring all manner of headers such as "X-Forwarded-For-IP", "X-Client-IP",
+   "X-Forwarded", "True-Client-IP", etc. We were still getting blocked for "Hacking."
+
+8. The next thing we did was port scan the challenge and found a response on port 5000. It appeared to be the exact same page, but there was
+   no rate limiting implemented and you would not get blocked for "Hacking."
+
+9. I captured a real request with Burp Suite CE so I could review the data and possibly continue building the flag with Intruder. [flag-checker-3.png]
+
+10. Using intruder, I was able to build out the challenge flag checking each position
+
+	10a. flag{77b} [flag-checker-4.png]
+	10b. flag{77ba} [flag-checker-5.png]
+	10c. ...
+	10d. flag{77ba0346d9565e77344b9fe40ecf1369}
+
+11. When the flag was finally constructed and needing checked I added on a "X-Forwarded-For-IP" header as the challenge requested and was presented with
+    a confirmed flag. [flag-checker-6.png]
+
+Flag: flag{77ba0346d9565e77344b9fe40ecf1369}

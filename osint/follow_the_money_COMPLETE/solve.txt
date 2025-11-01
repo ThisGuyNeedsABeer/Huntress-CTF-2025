@@ -1,0 +1,111 @@
+Challenge: Follow The Money
+Category: OSINT
+Authorty: @Brady
+
+Description:
+
+Hey Support Team,
+
+We had a bit of an issue yesterday that I need you to look into ASAP. There's been a possible case of money fraud involving our client, Harbor Line Bank. They handle a lot of transfers for real estate down payments, but the most recent one doesn't appear to have gone through correctly.
+
+Here's the deal, we need to figure out what happened and where the money might have gone. The titling company is looping in their incident response firm to investigate from their end. I need you to quietly review things on our end and see what you can find. Keep it discreet and be passive.
+
+I let Evelyn over at Harbor Line know that someone from our team might reach out. Her main email is offline right now just in case it was compromised, she's using a temporary address until things get sorted out:
+
+evelyn.carter@51tjxh.onmicrosoft.com
+
+IMPORTANT
+
+This challenge uses a non-standard flag format.
+
+NOTE
+
+The password to the ZIP archive below is follow_the_money.
+
+follow_the_money.zip 207 kB
+
+What is the username of the hacker? (3 Points)
+Submit the flag below. (7 Points)
+
+Solve:
+
+1. Download and extract the challenge files
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/osint]
+└─$ 7z x -pfollow_the_money follow_the_money.zip 
+
+7-Zip 25.01 (x64) : Copyright (c) 1999-2025 Igor Pavlov : 2025-08-03
+ 64-bit locale=en_US.UTF-8 Threads:16 OPEN_MAX:1024, ASM
+
+Scanning the drive for archives:
+1 file, 206790 bytes (202 KiB)
+
+Extracting archive: follow_the_money.zip
+--
+Path = follow_the_money.zip
+Type = zip
+Physical Size = 206790
+
+Everything is Ok
+
+Files: 5
+Size:       338140
+Compressed: 206790
+
+2. Review the e-mails, we can see:
+
+	a. E-mails back and forth between "justincase@evergatetitle.com" and "evelyn.carter@harborline-bank.com"
+	b. Some headshots, presumably of "Justin" and "Evelyn"
+	c. Links: Extract with [parse-links.py] output is stored in [extracted-links.txt]
+
+3. In the 5th e-mail [email 5 - FTM.eml] from "Justin" to "Evelyn" we see some "run of the mill" scammer content and a typo squat style link
+   https://evergatetltle.netlify.app/" in [extracted-links.txt]
+
+--- BEGIN ---
+From: Justin Case <justincase@evergatetitle.com>
+Sent: Monday, October 6, 2025 2:43 PM
+To: Evelyn Carter <evelyn.carter@harborline-bank.com>
+Subject: 200 E. Wharf Drive issue 
+ 
+Good Day Evelyn, 
+
+I see you sent over the payment. Unfortunately it didnt go through. Kindly give it another try. Please continue to use the link in my signature.
+
+Thank you very much,"
+--- END ---
+
+	a. This text instructs "Evelyn" to disregard main bank portal: "https://evergatetltle.netlify.app/" and to use the signature link which at a glance
+	   looks legit, but is actually a cloned site: "https://evergatetltle.netlify.app/"
+
+4. Heading to the fake page and filling out a "transfer" with some dummy information we see that the page sent that information to our "hacker."
+	
+	a. [transfer-1.png]
+	b. [transfer-2.png]
+
+5. When the request is made [transfer-3.png] we get the following base64 encoded response:
+
+	a. aHR0cHM6Ly9uMHRydXN0eC1ibG9nLm5ldGxpZnkuYXBwLw==
+
+	┌──(ctf㉿kali)-[~/CTF/huntress2025/osint]
+	└─$ emit "aHR0cHM6Ly9uMHRydXN0eC1ibG9nLm5ldGxpZnkuYXBwLw==" | b64
+	https://n0trustx-blog.netlify.app/
+
+6. Heading to the blog, we can see our "hacker's" username is "n0trustx" [hacker-1.png]
+
+	a. Flag #1: "N0TrustX"
+
+7. Digging deeper we can see his GitHub repo promoting "Spectre" to "manage financial transactions" [hacker-2.png]
+	
+	a. GitHub Repo: https://github.com/N0TrustX [hacker-3.png]
+
+8. Opening the "Spectre" repo we can see a single HTML document [spectre-1.png]
+
+	a. Line 122 of the code shows another base64 encoded string [spectre-2.png]
+
+	┌──(ctf㉿kali)-[~/CTF/huntress2025/osint]
+	└─$ emit "ZmxhZ3trbDF6a2xqaTJkeWNxZWRqNmVmNnltbHJzZjE4MGQwZn0=" | b64
+	flag{kl1zklji2dycqedj6ef6ymlrsf180d0f}
+
+	b. Flag #2: flag{kl1zklji2dycqedj6ef6ymlrsf180d0f}
+
+Flag: flag{kl1zklji2dycqedj6ef6ymlrsf180d0f}

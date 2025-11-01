@@ -1,0 +1,32 @@
+Challenge: Darcy
+Category: Forensics
+Author: John Hammond
+
+Description:
+
+Darcy has apparently been having a lot of fun with a unique version control system.
+
+She told me she hid a flag somewhere with her new tool and wants me to find it... I can't make any sense of it, can you?
+
+darcy.tar.gz - 7.61 MB
+
+Solve:
+
+1. Download and extract the challenge file
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/forensics/darcy]
+└─$ tar zxvf darcy.tar.gz 
+
+2. Enter the "_darcs" directory
+
+3. install "darcs" if it is not already
+
+	3a. "sudo apt install darcs"
+
+4. Use the "log" command to grep for the flag
+
+┌──(ctf㉿kali)-[~/…/forensics/darcy/darcy/_darcs]
+└─$ darcs log | grep -oE "flag{.*?}" --color=none
+flag{a0c1e852e1281d134f0ac2b8615183a3}
+
+Flag: flag{a0c1e852e1281d134f0ac2b8615183a3}

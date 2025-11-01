@@ -1,0 +1,2 @@
+Flag #1: Wytheville
+Flag #2: Flag{this_is_good_java}

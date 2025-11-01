@@ -1,0 +1,46 @@
+Challenge: Trust Me
+Category: Warmups
+Author: John Hammond
+
+Description:
+
+C'mon bro, trust me! Just trust me!! Trust me bro!!!
+
+The TrustMe.exe program on this Windows desktop "doesn't trust me?"
+
+It says it will give me the flag, but only if I "have the permissions of Trusted Installer"...?
+
+If you are using the VPN, you can RDP to this challenge with:
+
+Username: Administrator
+Password: h$4#82PSK0BUBaf7
+
+NOTE: This virtual machine does not have Internet access.
+
+Solve 1:
+
+1. RDP'd to the challenge box at 10.1.33.191
+2. Executing "TrustMe.exe" at C:\Users\Administrator\Desktop\ gives an error
+
+"I don't trust ya! I'll give you the flag... but only if you have Trusted Installer Permissions" [trust-me-1.png]
+
+3. I crafted a special task to keep the executable running as "NT AUTHORITY\SYSTEM" which is in the "TrustedInstaller" group [trust-me-2.png]
+
+@echo off
+sc.exe config TrustedInstaller binpath= "C:\Windows\Temp\TrustMe.exe"
+sc.exe start TrustedInstaller
+pause
+
+4. I proceeded to dump the process memory to see if a flag was revealed [trust-me-3.png]
+5. Searching for "flag{" in the dump file we find our challenge flag [trust-me-4.png]
+
+Flag: flag{c6065b1f12395d526595e62cf1f4d82a}
+
+Alertnate Solve:
+
+1. The challenge VM does not have an internet connection, but if you are using the VPN you can transfer files from the host machine to the challenge machine
+2. I downloaded and built "ti.exe" from: https://github.com/FourCoreLabs/TrustedInstallerPOC
+3. Running "ti.exe" spawned a shell as "NT AUTHORITY\SYSTEM" which allowed to "TrustMe.exe" to be run in context [trust-me-alt-1.png]
+
+Flag: flag{c6065b1f12395d526595e62cf1f4d82a}
+

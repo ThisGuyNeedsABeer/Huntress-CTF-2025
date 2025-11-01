@@ -1,0 +1,43 @@
+Challenge: Follow The Money: The Sequel
+Category: OSINT
+Author: @Brady
+
+Description:
+
+WARNING
+
+The initial Follow the Money challenge should be completed first before this challenge.
+
+Hey Support Team,
+
+Thanks for your help the other day! After seeing the way you handled yourself and gathered these details, I wanted to see if I could get a bit more help from you. I know you found their username the other day. See what you can do with that. I need you to find the town that this hacker lives in. I don't think the IR firm is doing enough. I want to have every piece of information we can find. Maybe we can pay a visit. Let me know what you find. Thanks!
+
+IMPORTANT
+
+This challenge DOES NOT require you to contact any businesses. This can be fully solved with publicly available information. Being that this is OSINT and public-facing, please DO NOT do anything to disrupt other CTF players or others that are not involved with the CTF.
+
+IMPORTANT
+
+This challenge uses a non-standard flag format.
+
+Flag #1: What town does our hacker friend live in?
+Flag #2: Can you find the nearby flag?
+
+1. Remembering that our "hacker friend" was using the handle "N0TrustX" we find this post on X that uses the same avatar as his GitHub [x-1.png]
+
+	https://x.com/N0TrustX/status/1974846974567629253/photo/1
+
+2. Performing a reverse image search we can find that this was from "Wytheville, VA" [google-1.png] and capture our first flag.
+
+	Flag #1: Wytheville
+
+3. Scrolling back through the "X" feed we find some interesting posts [x-2.png]:
+
+	1. Anyway, back to the grind (https://x.com/N0TrustX/status/1979184352316592465)
+	2. Working on some Java in this town. Pretty great Java (https://x.com/N0TrustX/status/1979181908035592673)
+	3. Always review your local business. Really helps them out.☕️⭐️⭐️⭐️⭐️⭐️ (https://x.com/N0TrustX/status/1980270923610570801)
+
+4. Looking at local businesses in the area we find "The Grind" and searching for a "flag" on the review page we find do in fact
+   find our second flag. [google-2.png]
+
+	Flag #2: Flag{this_is_good_java}

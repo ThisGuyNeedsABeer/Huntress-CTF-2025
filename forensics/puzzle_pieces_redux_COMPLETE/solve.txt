@@ -1,0 +1,261 @@
+Challenge: Puzzle Pieces Redux
+Category: Forensics
+Author: @Nordgaren
+
+Description:
+
+Well, I accidentally put my important data into a bunch of executables... just don't ask, okay?
+It was fine... until my cat Sasha stepped on my keyboard and messed everything up! OH NOoOoO00!!!!!111
+Can you help me recover my important data?
+
+
+puzzle-pieces-redux.7z 61.4 kB
+
+1. Download and extract the challenge files
+
+┌──(ctf㉿kali)-[~/Downloads/puzzle]
+└─$ ls            
+24b429c2b4f4a3c.bin  4fb72a1a24.bin  53bc247952f.bin  5e47.bin  5fa.bin  7b217.bin  8208.bin  8c14.bin  945363af.bin  a4c71d6229e19b0.bin  aa60783e.bin  c54940df1ba.bin  c8c5833b33584.bin  d2f7.bin  e1204.bin  f12f.bin
+
+2. Determining the file types with "file" we can see these are all PE files
+
+┌──(ctf㉿kali)-[~/Downloads/puzzle]
+└─$ file *             
+4fb72a1a24.bin:      MS-DOS executable, MZ for MS-DOS
+5e47.bin:            PE32 executable for MS Windows 6.00 (console), Intel i386, 4 sections
+5fa.bin:             PE32 executable for MS Windows 6.00 (console), Intel i386, 4 sections
+7b217.bin:           PE32 executable for MS Windows 6.00 (console), Intel i386, 4 sections
+8c14.bin:            PE32 executable for MS Windows 6.00 (console), Intel i386, 4 sections
+24b429c2b4f4a3c.bin: PE32 executable for MS Windows 6.00 (console), Intel i386, 4 sections
+53bc247952f.bin:     PE32 executable for MS Windows 6.00 (console), Intel i386, 4 sections
+8208.bin:            PE32 executable for MS Windows 6.00 (console), Intel i386, 4 sections
+945363af.bin:        PE32 executable for MS Windows 6.00 (console), Intel i386, 4 sections
+a4c71d6229e19b0.bin: PE32 executable for MS Windows 6.00 (console), Intel i386, 4 sections
+aa60783e.bin:        PE32 executable for MS Windows 6.00 (console), Intel i386, 4 sections
+c8c5833b33584.bin:   PE32 executable for MS Windows 6.00 (console), Intel i386, 4 sections
+c54940df1ba.bin:     PE32 executable for MS Windows 6.00 (console), Intel i386, 4 sections
+d2f7.bin:            PE32 executable for MS Windows 6.00 (console), Intel i386, 4 sections
+e1204.bin:           PE32 executable for MS Windows 6.00 (console), Intel i386, 4 sections
+f12f.bin:            PE32 executable for MS Windows 6.00 (console), Intel i386, 4 sections
+
+3. In the previous "Puzzle Pieces" challenge, we were able to sort by modified timestamps to solve, that does not appear to be the case here as we can see
+   some overlapping timestamps. 
+                                                                                                                                                                                                                                   
+┌──(ctf㉿kali)-[~/Downloads/puzzle]
+└─$ ls -lahi              
+total 1.9M
+5140616 drwxrwxr-x 2 ctf ctf 4.0K Oct 27 11:36 .
+4994075 drwxr-xr-x 9 ctf ctf  12K Oct 27 11:20 ..
+5142252 -rw-rw-r-- 1 ctf ctf 115K Oct  9 12:22 24b429c2b4f4a3c.bin
+5142253 -rw-rw-r-- 1 ctf ctf 115K Oct  9 12:24 4fb72a1a24.bin
+5142255 -rw-rw-r-- 1 ctf ctf 115K Oct  9 12:23 53bc247952f.bin
+5142256 -rw-rw-r-- 1 ctf ctf 115K Oct  9 12:22 5e47.bin
+5142257 -rw-rw-r-- 1 ctf ctf 115K Oct  9 12:23 5fa.bin
+5142258 -rw-rw-r-- 1 ctf ctf 115K Oct  9 12:22 7b217.bin
+5142259 -rw-rw-r-- 1 ctf ctf 115K Oct  9 11:53 8208.bin
+5142260 -rw-rw-r-- 1 ctf ctf 115K Oct  9 12:23 8c14.bin
+5142261 -rw-rw-r-- 1 ctf ctf 115K Oct  9 12:23 945363af.bin
+5142265 -rw-rw-r-- 1 ctf ctf 115K Oct  9 12:23 a4c71d6229e19b0.bin
+5142266 -rw-rw-r-- 1 ctf ctf 115K Oct  9 12:23 aa60783e.bin
+5142267 -rw-rw-r-- 1 ctf ctf 115K Oct  9 12:23 c54940df1ba.bin
+5142268 -rw-rw-r-- 1 ctf ctf 115K Oct  9 12:23 c8c5833b33584.bin
+5142269 -rw-rw-r-- 1 ctf ctf 115K Oct  9 12:22 d2f7.bin
+5142270 -rw-rw-r-- 1 ctf ctf 115K Oct  9 12:22 e1204.bin
+5142271 -rw-rw-r-- 1 ctf ctf 115K Oct  9 12:23 f12f.bin
+
+4. Moving over to FlareVM and renaming all of the files to ".exe" for execution we can obtain the following values 
+   (Note: I am using filename prefixes in XX format since there is no overlap). "4f" gives an execution error as well
+
+   	c8 = flag{
+	c5 = 02}
+
+	82 = be7a1 
+	4f = XXXXX
+	7b = e6817
+	5e = 88a2d
+	24 = 5abfa
+	d2 = 23c
+	e1 = d85d5
+	8c = 48979
+	5f = 5f93f
+	53 = f18ba
+	94 = f9f73
+	a4 = 49f8b
+	c8 = flag{ 
+	aa = d9c1a
+	f1 = 9bfc2
+	c5 = 02}
+
+	C:\Users\ctf\Downloads\puzzle>4fb72a1a24.exe
+
+	This version of C:\Users\ctf\Downloads\puzzle\4fb72a1a24.exe is not compatible with the version of Windows you're running. Check your computer's system information and then contact the software publisher.
+
+5. Looking by inode number or timestamp down to the second we can see some variation, however knowing that "c8" is first, and "c5" is last, does not indicate that
+   this will help.
+
+   	┌──(ctf㉿kali)-[~/Downloads/puzzle]
+	└─$ ls -lahi --time-style=+"%Y-%m-%d %H:%M:%S" 
+	total 1.9M
+	5140616 drwxrwxr-x 2 ctf ctf 4.0K 2025-10-27 11:36:37 .
+	4994075 drwxr-xr-x 9 ctf ctf  12K 2025-10-27 11:20:00 ..
+	5142252 -rw-rw-r-- 1 ctf ctf 115K 2025-10-09 12:22:44 24b429c2b4f4a3c.bin
+	5142253 -rw-rw-r-- 1 ctf ctf 115K 2025-10-09 12:24:02 4fb72a1a24.bin
+	5142255 -rw-rw-r-- 1 ctf ctf 115K 2025-10-09 12:23:11 53bc247952f.bin
+	5142256 -rw-rw-r-- 1 ctf ctf 115K 2025-10-09 12:22:40 5e47.bin
+	5142257 -rw-rw-r-- 1 ctf ctf 115K 2025-10-09 12:23:06 5fa.bin
+	5142258 -rw-rw-r-- 1 ctf ctf 115K 2025-10-09 12:22:34 7b217.bin
+	5142259 -rw-rw-r-- 1 ctf ctf 115K 2025-10-09 11:53:59 8208.bin
+	5142260 -rw-rw-r-- 1 ctf ctf 115K 2025-10-09 12:23:00 8c14.bin
+	5142261 -rw-rw-r-- 1 ctf ctf 115K 2025-10-09 12:23:14 945363af.bin
+	5142265 -rw-rw-r-- 1 ctf ctf 115K 2025-10-09 12:23:18 a4c71d6229e19b0.bin
+	5142266 -rw-rw-r-- 1 ctf ctf 115K 2025-10-09 12:23:26 aa60783e.bin
+	5142267 -rw-rw-r-- 1 ctf ctf 115K 2025-10-09 12:23:36 c54940df1ba.bin
+	5142268 -rw-rw-r-- 1 ctf ctf 115K 2025-10-09 12:23:23 c8c5833b33584.bin
+	5142269 -rw-rw-r-- 1 ctf ctf 115K 2025-10-09 12:22:51 d2f7.bin
+	5142270 -rw-rw-r-- 1 ctf ctf 115K 2025-10-09 12:22:54 e1204.bin
+	5142271 -rw-rw-r-- 1 ctf ctf 115K 2025-10-09 12:23:30 f12f.bin
+
+6. Looking at each file in a hexeditor, we can see they are essentially all the same file, and that the flag value is located at offset "000161C0" [hxd-1.png].
+   We can also now discover the missing flag value from "4f" [hxd-2.png]
+
+   82 = be7a1 
+	4f = 16f73
+	7b = e6817
+	5e = 88a2d
+	24 = 5abfa
+	d2 = 23c
+	e1 = d85d5
+	8c = 48979
+	5f = 5f93f
+	53 = f18ba
+	94 = f9f73
+	a4 = 49f8b
+	c8 = flag{ 
+	aa = d9c1a
+	f1 = 9bfc2
+	c5 = 02}
+
+7. Just eyeballing the data we have recovered now, we can see this is too many characters to fit our MD5 format for a flag. Analyzing further with some
+   wide "grep" casting, we can find some "flag parts" in the strings.
+
+    ┌──(ctf㉿kali)-[~/Downloads/puzzle]
+	└─$ strings * | grep flag                               
+	   flag_part_2.pdb 
+	flag_part_1.pdb
+	flag_part_3.pdb
+	flag_part_2.pdb
+	flag_part_4.pdb
+	flag_part_5.pdb
+	flag_part_6.pdb
+	flag_part_1.pdb
+	flag_part_0.pdb
+	flag_part_4.pdb
+	flag_part_5.pdb
+	flag{
+	flag_part_0.pdb
+	flag_part_7.pdb
+	flag_part_7.pdb
+	flag_part_3.pdb
+	flag_part_6.pdb
+
+8. Carving out the with some Powershell generated by AI, [carve.ps1] we get the following output
+
+FileName            OffsetHex GUID                                 Age PdbName
+--------            --------- ----                                 --- -------
+945363af.exe        19C80     D6F927D0-D988-4C49-9090-E11CDB6B5A1F   1 flag_part_0.pdb
+c8c5833b33584.exe   19C80     5301C5EB-63B0-47EB-BAEC-FEEB5B6C80A1   1 flag_part_0.pdb
+5e47.exe            19C80     85E46688-A16A-48E6-82BF-A1330B4E1046   1 flag_part_1.pdb
+8208.exe            19C80     A2E49589-958C-4861-916F-66D63CF5D2D7   1 flag_part_1.pdb
+7b217.exe           19C80     1DA2F5BB-E984-4AE9-98C4-18D0ED4CB352   1 flag_part_2.pdb
+5fa.exe             19C80     BAA7A7FB-F6B3-47BD-AC16-B2468EE53E24   1 flag_part_3.pdb
+e1204.exe           19C80     973BDE3E-3C1A-494B-A03D-5B621EFB9820   1 flag_part_3.pdb
+8c14.exe            19C80     EA6D0385-BF9B-4E15-8E99-80174C8BF0D7   1 flag_part_4.pdb
+a4c71d6229e19b0.exe 19C80     5C823124-39ED-41BB-B907-6326F7508A0E   1 flag_part_4.pdb
+24b429c2b4f4a3c.exe 19C80     B26C7339-B89C-41BE-9C64-951E14148925   1 flag_part_5.pdb
+aa60783e.exe        19C80     D00676FD-72A8-4B31-8D28-B71D134145E0   1 flag_part_5.pdb
+53bc247952f.exe     19C80     2A5ABA4C-FE5C-4846-A738-76CA71F31910   1 flag_part_6.pdb
+f12f.exe            19C80     88BB801A-F2A5-4D9C-8E83-9FB40487D9E8   1 flag_part_6.pdb
+c54940df1ba.exe     19C80     F6027FA3-EDE4-40E7-86FD-CD00813C19A0   1 flag_part_7.pdb
+d2f7.exe            19C80     D1060528-4243-44B9-A675-C5BD67C612E2   1 flag_part_7.pdb
+
+
+
+Grouped by PDB (which EXE points to this PDB):
+  flag_part_0.pdb -> 945363af.exe, c8c5833b33584.exe (GUIDs: D6F927D0-D988-4C49-9090-E11CDB6B5A1F, 5301C5EB-63B0-47EB-BAEC-FEEB5B6C80A1; offsets: 19C80, 19C80)
+  flag_part_1.pdb -> 5e47.exe, 8208.exe (GUIDs: 85E46688-A16A-48E6-82BF-A1330B4E1046, A2E49589-958C-4861-916F-66D63CF5D2D7; offsets: 19C80, 19C80)
+  flag_part_2.pdb -> 7b217.exe (GUIDs: 1DA2F5BB-E984-4AE9-98C4-18D0ED4CB352; offsets: 19C80)
+  flag_part_3.pdb -> 5fa.exe, e1204.exe (GUIDs: BAA7A7FB-F6B3-47BD-AC16-B2468EE53E24, 973BDE3E-3C1A-494B-A03D-5B621EFB9820; offsets: 19C80, 19C80)
+  flag_part_4.pdb -> 8c14.exe, a4c71d6229e19b0.exe (GUIDs: EA6D0385-BF9B-4E15-8E99-80174C8BF0D7, 5C823124-39ED-41BB-B907-6326F7508A0E; offsets: 19C80, 19C80)
+  flag_part_5.pdb -> 24b429c2b4f4a3c.exe, aa60783e.exe (GUIDs: B26C7339-B89C-41BE-9C64-951E14148925, D00676FD-72A8-4B31-8D28-B71D134145E0; offsets: 19C80, 19C80)
+  flag_part_6.pdb -> 53bc247952f.exe, f12f.exe (GUIDs: 2A5ABA4C-FE5C-4846-A738-76CA71F31910, 88BB801A-F2A5-4D9C-8E83-9FB40487D9E8; offsets: 19C80, 19C80)
+  flag_part_7.pdb -> c54940df1ba.exe, d2f7.exe (GUIDs: F6027FA3-EDE4-40E7-86FD-CD00813C19A0, D1060528-4243-44B9-A675-C5BD67C612E2; offsets: 19C80, 19C80)
+
+9. I made a table of the data I knew to be true
+
+| Part | Associated prefixes | Values           |
+| ---- | ------------------- | ---------------- |
+| 0    | c8                  | `flag{`          | KNOWN
+| 1    | 5e, 82              | `88a2d`, `be7a1` |
+| 2    | 7b                  | `e6817`          | KNOWN
+| 3    | 5f, e1              | `5f93f`, `d85d5` |
+| 4    | 8c, a4              | `48979`, `49f8b` |
+| 5    | 24, aa              | `5abfa`, `d9c1a` |
+| 6    | 53, f1              | `f18ba`, `9bfc2` |
+| 7    | c5                  | `02}`            | KNOWN
+
+10. Sorting the files by the "TimeDateStamp" from the PE Header we can determine which files were compiled in what order. [sort.py]
+	Ex: For the first flag part, "82" was compiled before "5e" so the winning chunk is "be7a1"
+
+┌──(ctf㉿kali)-[~/Downloads/puzzle]
+└─$ python sort.py            
+Filename                       Hex          UTC Time
+============================================================
+f12f.bin                       0x68E7D8F2  2025-10-09 15:46:58 UTC
+d2f7.bin                       0x68E7D8F2  2025-10-09 15:46:58 UTC
+8c14.bin                       0x68E7D8F1  2025-10-09 15:46:57 UTC
+aa60783e.bin                   0x68E7D8F1  2025-10-09 15:46:57 UTC
+5e47.bin                       0x68E7D8F1  2025-10-09 15:46:57 UTC
+5fa.bin                        0x68E7D8F1  2025-10-09 15:46:57 UTC
+c54940df1ba.bin                0x68E7D8F0  2025-10-09 15:46:56 UTC
+a4c71d6229e19b0.bin            0x68E7D8F0  2025-10-09 15:46:56 UTC
+53bc247952f.bin                0x68E7D8F0  2025-10-09 15:46:56 UTC
+945363af.bin                   0x68E7D8F0  2025-10-09 15:46:56 UTC
+24b429c2b4f4a3c.bin            0x68E7D8F0  2025-10-09 15:46:56 UTC
+c8c5833b33584.bin              0x68E7D8EF  2025-10-09 15:46:55 UTC
+8208.bin                       0x68E7D8EF  2025-10-09 15:46:55 UTC
+e1204.bin                      0x68E7D8EF  2025-10-09 15:46:55 UTC
+7b217.bin                      0x68E7D8EF  2025-10-09 15:46:55 UTC
+
+11. Repeating the process we can finally build out our flag: flag{be7a1e6817d85d549f8b5abfaf18ba02}
+
+Flag: flag{be7a1e6817d85d549f8b5abfaf18ba02}
+
+Bonus: All possible itterations of a flag
+
+flag{88a2de68175f93f489795abfa9bfc202}
+flag{88a2de68175f93f48979d9c1af18ba02}
+flag{88a2de68175f93f48979d9c1a9bfc202}
+flag{88a2de68175f93f49f8b5abfaf18ba02}
+flag{88a2de68175f93f49f8b5abfa9bfc202}
+flag{88a2de68175f93f49f8bd9c1af18ba02}
+flag{88a2de68175f93f49f8bd9c1a9bfc202}
+flag{88a2de6817d85d5489795abfaf18ba02}
+flag{88a2de6817d85d5489795abfa9bfc202}
+flag{88a2de6817d85d549f8b5abfaf18ba02}
+flag{88a2de6817d85d549f8b5abfa9bfc202}
+flag{88a2de6817d85d549f8bd9c1af18ba02}
+flag{88a2de6817d85d549f8bd9c1a9bfc202}
+flag{be7a1e68175f93f489795abfaf18ba02}
+flag{be7a1e68175f93f489795abfa9bfc202}
+flag{be7a1e68175f93f48979d9c1af18ba02}
+flag{be7a1e68175f93f48979d9c1a9bfc202}
+flag{be7a1e68175f93f49f8b5abfaf18ba02}
+flag{be7a1e68175f93f49f8b5abfa9bfc202}
+flag{be7a1e68175f93f49f8bd9c1af18ba02}
+flag{be7a1e68175f93f49f8bd9c1a9bfc202}
+flag{be7a1e6817d85d5489795abfaf18ba02}
+flag{be7a1e6817d85d5489795abfa9bfc202}
+flag{be7a1e6817d85d549f8b5abfaf18ba02} [real]
+flag{be7a1e6817d85d549f8b5abfa9bfc202}
+flag{be7a1e6817d85d549f8bd9c1af18ba02}
+flag{be7a1e6817d85d549f8bd9c1a9bfc202}
