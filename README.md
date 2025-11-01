@@ -26,4 +26,5 @@ Please feel free to leave any comments about how ridiculously lucky I got for so
 * https://www.sudeepvision.com/blog/huntress_ctf_2025_my_hawaii_vacation_malware_challenge/
 * https://www.sydneyharris.com/blog/huntress-ctf-2025-sandy
 * https://0x41414141-code.github.io/
+* https://cyber-note.notion.site/2025-Huntress-CTF-2776c6e16f868026bbe2fd83b2cb8aec
 * More to be added
