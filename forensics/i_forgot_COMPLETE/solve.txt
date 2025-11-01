@@ -1,0 +1,257 @@
+Challenge: I Forgot
+Category: Forensics
+Author: John Hammond
+ 
+Description:
+ 
+Solve:
+ 
+1. Download and extract the challenge files
+ 
+2. Strings the memory dump searching for various keywords such as "decrypt"
+ 
+┌──(ctf㉿kali)-[~/Downloads/i_forgot]
+└─$ strings memdump.dmp | grep -i "decrypt" > strings.txt 
+ 
+3. We see some useful information pertaining to "DECRYPT_PRIVATE_KEY.ZIP" and other such files,
+ 
+4. Dump any interesting processes such as powershell.exe/conhost.exe/etc. the powershell.exe parent process is 5920
+ 
+┌──(ctf㉿kali)-[~/Downloads/i_forgot]
+└─$ vol -f memdump.dmp windows.pslist                  
+Volatility 3 Framework 2.26.2
+Progress:  100.00               PDB scanning finished                        
+PID     PPID    ImageFileName   Offset(V)       Threads Handles SessionId       Wow64   CreateTime      ExitTime        File output
+ 
+4       0       System  0xdf07c0690040  176     -       N/A     False   2025-09-28 04:40:31.000000 UTC  N/A     Disabled
+96      4       Registry        0xdf07c0875080  4       -       N/A     False   2025-09-28 04:40:26.000000 UTC  N/A     Disabled
+448     4       smss.exe        0xdf07c3c42040  3       -       N/A     False   2025-09-28 04:40:31.000000 UTC  N/A     Disabled
+620     592     csrss.exe       0xdf07c4287080  13      -       0       False   2025-09-28 04:40:32.000000 UTC  N/A     Disabled
+696     592     wininit.exe     0xdf07c4363080  6       -       0       False   2025-09-28 04:40:32.000000 UTC  N/A     Disabled
+716     688     csrss.exe       0xdf07c459e080  15      -       1       False   2025-09-28 04:40:32.000000 UTC  N/A     Disabled
+796     688     winlogon.exe    0xdf07c43c8080  7       -       1       False   2025-09-28 04:40:32.000000 UTC  N/A     Disabled
+832     696     services.exe    0xdf07c43ee080  11      -       0       False   2025-09-28 04:40:32.000000 UTC  N/A     Disabled
+860     696     lsass.exe       0xdf07c4638080  13      -       0       False   2025-09-28 04:40:32.000000 UTC  N/A     Disabled
+976     832     svchost.exe     0xdf07c469f240  40      -       0       False   2025-09-28 04:40:32.000000 UTC  N/A     Disabled
+984     796     fontdrvhost.ex  0xdf07c46a6080  7       -       1       False   2025-09-28 04:40:32.000000 UTC  N/A     Disabled
+992     696     fontdrvhost.ex  0xdf07c46a8140  7       -       0       False   2025-09-28 04:40:32.000000 UTC  N/A     Disabled
+624     832     svchost.exe     0xdf07c488e080  24      -       0       False   2025-09-28 04:40:33.000000 UTC  N/A     Disabled
+1076    796     dwm.exe 0xdf07c493b080  22      -       1       False   2025-09-28 04:40:33.000000 UTC  N/A     Disabled
+1184    832     svchost.exe     0xdf07c498f200  7       -       0       False   2025-09-28 04:40:33.000000 UTC  N/A     Disabled
+1192    832     svchost.exe     0xdf07c498e080  12      -       0       False   2025-09-28 04:40:33.000000 UTC  N/A     Disabled
+1204    832     svchost.exe     0xdf07c48860c0  18      -       0       False   2025-09-28 04:40:33.000000 UTC  N/A     Disabled
+1212    832     svchost.exe     0xdf07c46490c0  20      -       0       False   2025-09-28 04:40:33.000000 UTC  N/A     Disabled
+1312    832     svchost.exe     0xdf07c49ee080  14      -       0       False   2025-09-28 04:40:33.000000 UTC  N/A     Disabled
+1324    832     svchost.exe     0xdf07c49f5080  27      -       0       False   2025-09-28 04:40:33.000000 UTC  N/A     Disabled
+1368    832     svchost.exe     0xdf07c4711240  24      -       0       False   2025-09-28 04:40:33.000000 UTC  N/A     Disabled
+1400    832     svchost.exe     0xdf07c4723080  6       -       0       False   2025-09-28 04:40:33.000000 UTC  N/A     Disabled
+1528    832     svchost.exe     0xdf07c47ee200  71      -       0       False   2025-09-28 04:40:33.000000 UTC  N/A     Disabled
+1584    832     svchost.exe     0xdf07c4a11240  7       -       0       False   2025-09-28 04:40:33.000000 UTC  N/A     Disabled
+1696    832     svchost.exe     0xdf07c4a4e080  38      -       0       False   2025-09-28 04:40:33.000000 UTC  N/A     Disabled
+1800    832     svchost.exe     0xdf07c07a9080  6       -       0       False   2025-09-28 04:40:34.000000 UTC  N/A     Disabled
+1816    1528    taskhostw.exe   0xdf07c073a080  7       -       0       False   2025-09-28 04:40:34.000000 UTC  N/A     Disabled
+1948    832     svchost.exe     0xdf07c06ac080  12      -       0       False   2025-09-28 04:40:34.000000 UTC  N/A     Disabled
+1984    832     svchost.exe     0xdf07c4bf0240  8       -       0       False   2025-09-28 04:40:34.000000 UTC  N/A     Disabled
+1996    4       MemCompression  0xdf07c0718040  38      -       N/A     False   2025-09-28 04:40:34.000000 UTC  N/A     Disabled
+1052    832     svchost.exe     0xdf07c4cab080  22      -       0       False   2025-09-28 04:40:34.000000 UTC  N/A     Disabled
+2088    832     svchost.exe     0xdf07c4be6080  12      -       0       False   2025-09-28 04:40:34.000000 UTC  N/A     Disabled
+2152    1528    sihost.exe      0xdf07c4d7a240  17      -       1       False   2025-09-28 04:40:34.000000 UTC  N/A     Disabled
+2228    832     svchost.exe     0xdf07c3fa9080  16      -       1       False   2025-09-28 04:40:34.000000 UTC  N/A     Disabled
+2272    832     svchost.exe     0xdf07c4e020c0  8       -       0       False   2025-09-28 04:40:34.000000 UTC  N/A     Disabled
+2388    832     svchost.exe     0xdf07c4e3d080  8       -       1       False   2025-09-28 04:40:34.000000 UTC  N/A     Disabled
+2432    832     svchost.exe     0xdf07c4e460c0  18      -       0       False   2025-09-28 04:40:34.000000 UTC  N/A     Disabled
+2596    832     svchost.exe     0xdf07c4ec3240  17      -       0       False   2025-09-28 04:40:35.000000 UTC  N/A     Disabled
+2616    1528    taskhostw.exe   0xdf07c4ec5080  8       -       1       False   2025-09-28 04:40:35.000000 UTC  N/A     Disabled
+2640    2088    audiodg.exe     0xdf07c4eb8080  8       -       0       False   2025-09-28 04:40:35.000000 UTC  N/A     Disabled
+2676    1528    MicrosoftEdgeU  0xdf07c4ee00c0  6       -       0       True    2025-09-28 04:40:35.000000 UTC  N/A     Disabled
+2748    832     svchost.exe     0xdf07c4fb0080  24      -       0       False   2025-09-28 04:40:35.000000 UTC  N/A     Disabled
+2876    832     spoolsv.exe     0xdf07c4ff50c0  12      -       0       False   2025-09-28 04:40:35.000000 UTC  N/A     Disabled
+2304    832     svchost.exe     0xdf07c50d1080  7       -       0       False   2025-09-28 04:40:35.000000 UTC  N/A     Disabled
+2964    832     svchost.exe     0xdf07c3f91080  12      -       0       False   2025-09-28 04:40:35.000000 UTC  N/A     Disabled
+3076    832     svchost.exe     0xdf07c4dd1080  16      -       0       False   2025-09-28 04:40:36.000000 UTC  N/A     Disabled
+3176    832     VGAuthService.  0xdf07c51f3080  5       -       0       False   2025-09-28 04:40:36.000000 UTC  N/A     Disabled
+3200    832     vmtoolsd.exe    0xdf07c4dca0c0  15      -       0       False   2025-09-28 04:40:36.000000 UTC  N/A     Disabled
+3212    832     vm3dservice.ex  0xdf07c4fbf080  5       -       0       False   2025-09-28 04:40:36.000000 UTC  N/A     Disabled
+3228    832     MsMpEng.exe     0xdf07c51ee080  36      -       0       False   2025-09-28 04:40:36.000000 UTC  N/A     Disabled
+3376    832     svchost.exe     0xdf07c5286080  5       -       0       False   2025-09-28 04:40:36.000000 UTC  N/A     Disabled
+3516    3212    vm3dservice.ex  0xdf07c5387080  6       -       1       False   2025-09-28 04:40:36.000000 UTC  N/A     Disabled
+3728    832     dllhost.exe     0xdf07c535b080  21      -       0       False   2025-09-28 04:40:37.000000 UTC  N/A     Disabled
+3924    832     dllhost.exe     0xdf07c54ce080  18      -       0       False   2025-09-28 04:40:37.000000 UTC  N/A     Disabled
+4004    976     WmiPrvSE.exe    0xdf07c54c2080  12      -       0       False   2025-09-28 04:40:37.000000 UTC  N/A     Disabled
+2468    1368    ctfmon.exe      0xdf07c4e83080  12      -       1       False   2025-09-28 04:40:37.000000 UTC  N/A     Disabled
+2548    832     msdtc.exe       0xdf07c55900c0  12      -       0       False   2025-09-28 04:40:37.000000 UTC  N/A     Disabled
+2376    832     svchost.exe     0xdf07c4fa7080  8       -       0       False   2025-09-28 04:40:38.000000 UTC  N/A     Disabled
+2456    832     svchost.exe     0xdf07c55d4080  33      -       0       False   2025-09-28 04:40:38.000000 UTC  N/A     Disabled
+4288    3076    AggregatorHost  0xdf07c5673080  4       -       0       False   2025-09-28 04:40:38.000000 UTC  N/A     Disabled
+4340    796     userinit.exe    0xdf07c574b080  0       -       1       False   2025-09-28 04:40:39.000000 UTC  2025-09-28 04:41:05.000000 UTC  Disabled
+4396    4340    explorer.exe    0xdf07c5807080  87      -       1       False   2025-09-28 04:40:39.000000 UTC  N/A     Disabled
+4520    832     svchost.exe     0xdf07c58460c0  14      -       0       False   2025-09-28 04:40:39.000000 UTC  N/A     Disabled
+4640    2152    ShellHost.exe   0xdf07c4e73080  10      -       1       False   2025-09-28 04:40:40.000000 UTC  N/A     Disabled
+4804    2152    CrossDeviceRes  0xdf07c4637080  9       -       1       False   2025-09-28 04:40:40.000000 UTC  N/A     Disabled
+5052    832     VSSVC.exe       0xdf07c5ea80c0  5       -       0       False   2025-09-28 04:40:41.000000 UTC  N/A     Disabled
+868     832     svchost.exe     0xdf07c6017080  16      -       1       False   2025-09-28 04:40:42.000000 UTC  N/A     Disabled
+5408    976     StartMenuExper  0xdf07c5c5c080  36      -       1       False   2025-09-28 04:40:43.000000 UTC  N/A     Disabled
+5428    976     SearchHost.exe  0xdf07c5c5b080  36      -       1       False   2025-09-28 04:40:43.000000 UTC  N/A     Disabled
+5572    976     RuntimeBroker.  0xdf07c5cbe080  18      -       1       False   2025-09-28 04:40:43.000000 UTC  N/A     Disabled
+5652    832     svchost.exe     0xdf07c5a0b080  9       -       1       False   2025-09-28 04:40:44.000000 UTC  N/A     Disabled
+5664    976     RuntimeBroker.  0xdf07c5a08080  12      -       1       False   2025-09-28 04:40:44.000000 UTC  N/A     Disabled
+5752    976     Widgets.exe     0xdf07c5af8080  11      -       1       False   2025-09-28 04:40:44.000000 UTC  N/A     Disabled
+6036    5428    msedgewebview2  0xdf07c5eb7080  53      -       1       False   2025-09-28 04:40:45.000000 UTC  N/A     Disabled
+5284    6036    msedgewebview2  0xdf07c6516080  10      -       1       False   2025-09-28 04:40:46.000000 UTC  N/A     Disabled
+6564    6036    msedgewebview2  0xdf07c6a19080  21      -       1       False   2025-09-28 04:40:47.000000 UTC  N/A     Disabled
+6656    6036    msedgewebview2  0xdf07c64d4080  20      -       1       False   2025-09-28 04:40:48.000000 UTC  N/A     Disabled
+6684    6036    msedgewebview2  0xdf07c64f5080  11      -       1       False   2025-09-28 04:40:48.000000 UTC  N/A     Disabled
+6844    6036    msedgewebview2  0xdf07c64ed080  20      -       1       False   2025-09-28 04:40:48.000000 UTC  N/A     Disabled
+4484    832     NisSrv.exe      0xdf07c6d090c0  9       -       0       False   2025-09-28 04:40:56.000000 UTC  N/A     Disabled
+4864    976     WmiPrvSE.exe    0xdf07c6bf9080  14      -       0       False   2025-09-28 04:40:57.000000 UTC  N/A     Disabled
+4844    976     RuntimeBroker.  0xdf07c6c2b080  6       -       1       False   2025-09-28 04:40:58.000000 UTC  N/A     Disabled
+3556    976     RuntimeBroker.  0xdf07c6bf50c0  6       -       1       False   2025-09-28 04:40:58.000000 UTC  N/A     Disabled
+7184    832     svchost.exe     0xdf07c68b9080  11      -       0       False   2025-09-28 04:40:58.000000 UTC  N/A     Disabled
+7464    976     smartscreen.ex  0xdf07c4636080  10      -       1       False   2025-09-28 04:41:01.000000 UTC  N/A     Disabled
+7508    4396    SecurityHealth  0xdf07c6b8c080  4       -       1       False   2025-09-28 04:41:01.000000 UTC  N/A     Disabled
+7524    832     SecurityHealth  0xdf07c55e8080  15      -       0       False   2025-09-28 04:41:01.000000 UTC  N/A     Disabled
+7832    832     WmiApSrv.exe    0xdf07c6c76080  7       -       0       False   2025-09-28 04:41:04.000000 UTC  N/A     Disabled
+8064    4396    vmtoolsd.exe    0xdf07c54d3080  14      -       1       False   2025-09-28 04:41:07.000000 UTC  N/A     Disabled
+8176    4396    msedge.exe      0xdf07c4822080  0       -       1       False   2025-09-28 04:41:10.000000 UTC  2025-09-28 04:41:12.000000 UTC  Disabled
+3588    4396    OneDrive.exe    0xdf07c73de080  32      -       1       False   2025-09-28 04:41:13.000000 UTC  N/A     Disabled
+5852    3588    Microsoft.Shar  0xdf07c49a0080  0       -       1       False   2025-09-28 04:41:16.000000 UTC  2025-09-28 04:41:30.000000 UTC  Disabled
+6816    832     SearchIndexer.  0xdf07c5850080  15      -       0       False   2025-09-28 04:41:26.000000 UTC  N/A     Disabled
+3896    976     RuntimeBroker.  0xdf07c520d080  9       -       1       False   2025-09-28 04:41:30.000000 UTC  N/A     Disabled
+4036    4396    WindowsTermina  0xdf07c4cd40c0  23      -       1       False   2025-09-28 04:41:34.000000 UTC  N/A     Disabled
+3956    6816    SearchProtocol  0xdf07c4e39080  9       -       0       False   2025-09-28 04:41:35.000000 UTC  N/A     Disabled
+3024    6816    SearchFilterHo  0xdf07c4e15080  6       -       0       False   2025-09-28 04:41:36.000000 UTC  N/A     Disabled
+6024    4036    OpenConsole.ex  0xdf07c5d83080  6       -       1       False   2025-09-28 04:41:37.000000 UTC  N/A     Disabled
+5920    4036    powershell.exe  0xdf07c73d5080  20      -       1       False   2025-09-28 04:41:37.000000 UTC  N/A     Disabled
+6708    976     RuntimeBroker.  0xdf07c695e080  8       -       1       False   2025-09-28 04:41:37.000000 UTC  N/A     Disabled
+5760    1528    taskhostw.exe   0xdf07c5aa1080  6       -       1       False   2025-09-28 04:41:39.000000 UTC  N/A     Disabled
+1388    5920    Notepad.exe     0xdf07c45b70c0  6       -       1       False   2025-09-28 04:41:51.000000 UTC  N/A     Disabled
+1628    1388    Notepad.exe     0xdf07c50d2080  17      -       1       False   2025-09-28 04:41:51.000000 UTC  N/A     Disabled
+2132    5920    BackupHelper.e  0xdf07c4733080  6       -       1       False   2025-09-28 04:41:51.000000 UTC  N/A     Disabled
+2332    2132    conhost.exe     0xdf07c6539080  4       -       1       False   2025-09-28 04:41:52.000000 UTC  N/A     Disabled
+7152    5920    memdump.exe     0xdf07c55230c0  3       -       1       False   2025-09-28 04:42:01.000000 UTC  N/A     Disabled
+245224456028616 0               0xdf07c49780c0  0       -       3298263976      True    N/A     N/A     Disabled
+14024712        25769803776     (������(�����   0xdf07c4977ff0  3674819088      -       N/A     True    1600-11-20 01:02:29.000000 UTC  N/A     Disabled
+0       272693573022080         0xdf07c49780b8  0       -       -       True    N/A     N/A     Disabled
+ 
+┌──(ctf㉿kali)-[~/Downloads/i_forgot]
+└─$ vol -f memdump.dmp windows.memmap --pid 5920 --dump
+ 
+5. Review the strings of the process dump again, searching for clues: password, decrypt, 
+ 
+ing 7-Zip (GUI): Right-click -> Open archive -> enter password ePDaACdOCwaMiYDG
+2) Decrypt the AES key+IV:
+   openssl pkeyutl -decrypt -inkey private.pem -in key.enc -out key_raw.bin -pkeyopt rsa_p
+MDECRYPT_PRIVATE_KEY.zip
+ 
+6. Search for ZIP files with BinWalk
+┌──(ctf㉿kali)-[~/Downloads/i_forgot]
+└─$ binwalk -y zip memdump.dmp          
+ 
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+58794947      0x38123C3       bzip2 compressed data, block size = 900k
+103905628     0x631795C       gzip compressed data, maximum compression, from FAT filesystem (MS-DOS, OS/2, NT), last modified: 1972-02-16 18:29:33 (bogus date)
+119148285     0x71A0EFD       gzip compressed data, last modified: 1997-07-11 19:36:45
+152252452     0x9133024       gzip compressed data, last modified: 1985-06-02 05:56:31 (bogus date)
+182798225     0xAE54791       End of Zip archive, footer length: 22
+204104308     0xC2A6274       gzip compressed data, fastest compression, from TOPS/20, last modified: 1970-01-01 00:00:00 (null date)
+253260213     0xF1871B5       End of Zip archive, footer length: 22
+289506391     0x11418457      End of Zip archive, footer length: 22
+441870899     0x1A566A33      End of Zip archive, footer length: 22
+528852560     0x1F85A650      gzip compressed data, ASCII, fastest compression, last modified: 2010-06-10 12:17:26
+543961427     0x206C3153      End of Zip archive, footer length: 22
+698573718     0x29A36396      Zip archive data, compressed size: 3650, uncompressed size: 133373318, name:
+767460998     0x2DBE8686      7-zip archive data, version 0.117
+775127427     0x2E338183      End of Zip archive, footer length: 22
+807758565     0x30256AE5      Zip archive data, at least v2.0 to extract, compressed size: 3650, uncompressed size: 7558, name: keys.json
+807821373     0x3026603D      Zip archive data, at least v2.0 to extract, compressed size: 798, uncompressed size: 1558, name: LICENSE
+807822208     0x30266380      Zip archive data, at least v2.0 to extract, compressed size: 75, uncompressed size: 79, name: manifest.json
+807822402     0x30266442      Zip archive data, at least v2.0 to extract, name: _metadata/
+807822442     0x3026646A      Zip archive data, at least v2.0 to extract, compressed size: 1356, uncompressed size: 1864, name: _metadata/verified_contents.json
+807827875     0x302679A3      End of Zip archive, footer length: 22
+809868967     0x30459EA7      End of Zip archive, footer length: 22
+919256604     0x36CABE1C      Zip archive data, encrypted compressed size: 17076226, uncompressed size: 539821059, name:
+951177608     0x38B1D188      Zip archive data, encrypted at least v1.0 to extract, compressed size: 268, uncompressed size: 256, name: key.enc
+955469824     0x38F35000      Zip archive data, encrypted at least v2.0 to extract, compressed size: 1324, uncompressed size: 1708, name: private.pem
+955471233     0x38F35581      Zip archive data, encrypted at least v1.0 to extract, compressed size: 268, uncompressed size: 256, name: key.enc
+955471740     0x38F3577C      End of Zip archive, footer length: 22
+979304840     0x3A5F0188      Zip archive data, encrypted at least v1.0 to extract, compressed size: 268, uncompressed size: 256, name: key.enc
+1012595925    0x3C5AFCD5      7-zip archive data, version 10.0
+1027883291    0x3D44411B      Zip archive data, encrypted at least v2.0 to extract, compressed size: 1324, uncompressed size: 1708, name: private.pem
+1027885678    0x3D444A6E      Zip archive data, encrypted at least v1.0 to extract, compressed size: 268, uncompressed size: 256, name: key.enc
+1032707285    0x3D8DDCD5      7-zip archive data, version 10.0
+1041243277    0x3E101C8D      gzip compressed data, ASCII, has original file name: "D", from Amiga, last modified: 1975-04-30 01:57:20 (bogus date)
+ 
+7. Carve the zip archives out with Foremost
+ 
+┌──(ctf㉿kali)-[~/Downloads/i_forgot]
+└─$ foremost -t zip -i memdump.dmp -o carved 
+Processing: memdump.dmp
+|foundat=
+*foundat=
+foundat=
+foundat=_@▒
+*foundat=
+foundat=_@▒
+*foundat=
+*foundat=
+rXg�sD�;�t=keys.json홷��D▒���րsB�p\�sN
+         AA�
+�g_}��9�{���������þa��ci�1y���g_��V�?>�׵��p�>��3��˲�K
+**foundat=key.encUT
+foundat=private.pemUT
+foundat=key.encUT
+foundat=private.pemUT
+foundat=key.encUT
+**|
+ 
+	a. All of them are corrupted except "01866162.zip"
+	b. Contents: private.pem & key.enc
+	c. Extract with key: ePDaACdOCwaMiYDG
+ 
+	┌──(ctf㉿kali)-[~/Downloads/i_forgot]
+	└─$ 7z x -pePDaACdOCwaMiYDG 01866152.zip
+ 
+	7-Zip 25.01 (x64) : Copyright (c) 1999-2025 Igor Pavlov : 2025-08-03
+	 64-bit locale=en_US.UTF-8 Threads:16 OPEN_MAX:1024, ASM
+ 
+	Scanning the drive for archives:
+	1 file, 1938 bytes (2 KiB)
+ 
+	Extracting archive: 01866152.zip
+	--
+	Path = 01866152.zip
+	Type = zip
+	Physical Size = 1938
+ 
+	Everything is Ok
+ 
+	Files: 2
+	Size:       1964
+	Compressed: 1938
+ 
+ 
+8. Get the raw key file (AES+IV)
+ 
+	a. We can't see the full command to know what the RSA padding mode to use, so we'll try, "none", "oaep" and "x931" and compare the results
+ 
+	┌──(ctf㉿kali)-[~/Downloads/i_forgot]
+	└─$ ls -lah *.bin 
+	-rw-rw-r-- 1 ctf ctf 256 Oct 13 18:10 key_raw_none.bin
+	-rw-rw-r-- 1 ctf ctf  48 Oct 13 18:10 key_raw_oaep.bin
+	-rw-rw-r-- 1 ctf ctf   0 Oct 13 18:10 key_raw_x931.bin
+ 
+	b. Since we're looking for a 48 byte key, 32 character's for the key and 16 for the IV, "key_raw_oaep.bin" is a good looking candidate.
+ 
+9. Decrypt via CyberChef
+ 
+https://gchq.github.io/CyberChef/#recipe=AES_Decrypt(%7B'option':'Hex','string':'28%209e%20a5%208a%2038%2054%209d%205f%20af%207a%2097%20a6%20dd%2019%20cd%20f2%20dd%20c0%2049%206a%208a%2064%20f9%209a%2077%20c6%2043%2052%209c%2094%20b8%2004'%7D,%7B'option':'Hex','string':'2c%206a%2055%20b0%20a8%2091%2041%2005%2065%2017%2068%207a%2097%2073%2005%20d6'%7D,'CBC','Raw','Raw',%7B'option':'Hex','string':''%7D,%7B'option':'Hex','string':''%7D)&input=RwNUMGGti0%2BLDKlAtfdgVdqc0nxBbx1Bikmsn3mxOQ2EawsWYP0pcpC20T2j53HfG/s7xddK5rSSHuLRRSqwp%2BdcjoHJBuL9bgpXbJ2Vzel3d1aSsk2x90oJqlDsWCbph2Sv6E8%2BmACQ6KbVc%2B0Ih5aPJASQQACG4xSZNfSaJom5H38vAt7LOT9TSnutzp6jjkElRHs7cNk5pObJi5HD5192We3t/1UQ86uCQUqvLN1ClvSCdmmv0JN3sGwHWboUrwb0Tqh8L8twawfSWIhHOg
+ 
+=== CONFIDENTIAL RECOVERY ===
+Note: This file contains the recovered data for decryption.
+-----------------------------
+FLAG:
+flag{fa838fa9823e5d612b25001740faca31}
+-----------------------------
+ 
+Flag: flag{fa838fa9823e5d612b25001740faca31}
