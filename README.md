@@ -43,4 +43,7 @@ Please feel free to leave any comments about how ridiculously lucky I got for so
 * https://github.com/SubtleScope/ctf_writeups/tree/master/huntress_2025
 * https://ashleyxir.xyz/posts/verify_youre_human/
 * https://xeroexecute.github.io/posts/rusttickler3/
+* https://bails.dev/posts/huntress-ctf-2025/
+* https://forrestcaffray.com/huntress-ctf-2025-mega-write-up-1b81666bc686
+* https://ultimacybr.co.uk/hctf25_main/
 * More to be added
